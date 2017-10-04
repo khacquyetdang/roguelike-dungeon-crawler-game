@@ -2,7 +2,7 @@ import RoomMaze from './RoomMaze';
 import Wall from './Wall';
 
 class Maze {
-    constructor(roomSize, wallWidth, roomRow, roomCol, map_size)
+    constructor(roomSize, wallWidth, map_size)
     {
         this.map_size = map_size;
         this.roomSize = roomSize;
@@ -11,6 +11,7 @@ class Maze {
         this.roomCol = Math.floor((map_size) / (roomSize +  wallWidth));
         this.generateMapMatrix();
         this.generateMaze();
+        this.generateDeadEnd();
     }
 
     getRandomInt(min, max) {
@@ -25,68 +26,51 @@ class Maze {
         for (var indexRow = 0; indexRow < this.roomRow; indexRow++)
         {
             var roomRows = new Array();
-            var wallsVertical = new Array();
-            var wallsHorizontal = new Array();
+            var wallsRows = new Array();
 
             for (var indexCol = 0; indexCol < this.roomCol; indexCol++)
             {
-                var wallX = indexRow * (this.roomSize + this.wallWidth);
-                var wallY = indexCol * (this.roomSize + this.wallWidth);
-                var wallVertical = new Wall(wallX, wallY, this.wallWidth, this.roomSize);
+                var wallX = indexCol * (this.roomSize + this.wallWidth);
+                var wallY = indexRow * (this.roomSize + this.wallWidth);
+                var wallVertical = new Wall(indexRow, 2 * indexCol, wallX, wallY, this.wallWidth, this.roomSize + this.wallWidth);
 
-                wallsVertical.push(wallVertical);
+                wallsRows.push(wallVertical);
 
                 var roomX = wallX + this.wallWidth;
                 var roomY = wallY;
-                var newRoom = new RoomMaze(indexRow, indexCol, roomX, roomY, this.roomSize, this.roomSize);
+                var newRoom = new RoomMaze(indexRow, indexCol, roomX, roomY, this.roomSize , this.roomSize);
                 //constructor Wall(x, y, width, height)
                 // vertical wall
                 roomRows.push(newRoom);
-                var wallHorizontal = new Wall(wallX + this.wallWidth, roomY + this.roomSize, this.roomSize, this.wallWidth);
-                wallsHorizontal.push(wallHorizontal);
+                var wallHorizontal = new Wall(indexRow, 2 * indexCol + 1, wallX + this.wallWidth, roomY + this.roomSize, this.roomSize + this.wallWidth, this.wallWidth);
+                wallsRows.push(wallHorizontal);
             }
             this.rooms.push(roomRows);
-            this.walls.push(wallsVertical);
-            this.walls.push(wallsHorizontal);
+            this.walls.push(wallsRows);
         }
 
     }
 
     getUnVisitedNeighBorsForRoom = (currentRoom) => {
-
-        console.log("rooms : ", this.rooms);
-        console.log("currentRoom : ", currentRoom);
         var rooms = this.rooms;
         var neighboardRooms = [{ row : - 1, col : 0},
             { row : 1, col : 0},
             { row : 0, col : -1},
             { row : 0, col : 1}].reduce(function(accu, acell) {
-                console.log("acell: ", acell, " rooms ", rooms);
                 var indexRow = currentRoom.indexRow + acell.row;
                 var indexCol = currentRoom.indexCol + acell.col;
-                console.log("index Row: ", indexRow, " indexCol ", indexCol);
-                console.log("rooms length : ", rooms.length, " indexCol ", indexCol);
-
-                console.log("indexRow >= 0 && indexRow < rooms[0].length && indexCol >= 0 && indexCol < rooms.length : ", (indexRow >= 0 && indexRow < rooms[0].length
-                    && indexCol >= 0 && indexCol < rooms.length)
-                );
-                //console.log("is visited: ", rooms[indexRow][indexCol]);
+                        //console.log("is visited: ", rooms[indexRow][indexCol]);
                 if (indexRow >= 0 && indexRow < rooms[0].length
                     && indexCol >= 0 && indexCol < rooms.length
                 ) {
-                    console.log("is visited: ", rooms[indexRow][indexCol])
-                    console.log("is visited: ", rooms[indexRow][indexCol].visited === false)
-
                     if (rooms[indexRow][indexCol].visited === false) {
                         accu.push(rooms[indexRow][indexCol]);
                     }
                 }
-                console.log("accu: ", accu);
                 return accu;
             },
             []
         );
-        console.log("neighboardRooms : ", neighboardRooms);
         return neighboardRooms;
     }
 
@@ -103,6 +87,7 @@ class Maze {
         }
         return false;
     }
+
     generateMaze = () => {
         var currentRoom = this.rooms[0][0];
 
@@ -113,7 +98,6 @@ class Maze {
         while (this.hasUnvisitedRooms())
         {
             var unVisitedNeighBors = this.getUnVisitedNeighBorsForRoom(currentRoom);
-            console.log("unVisitedNeighBors: ", unVisitedNeighBors);
             if (unVisitedNeighBors.length >= 1)
             {
                 // Choose randomly one of the unvisited neighbours
@@ -121,8 +105,8 @@ class Maze {
                 // push the current cell to the stack
                 stack.push(currentRoom);
                 // remove the walls
-                var indexWallToRemoveRow = currentRoom.indexRow + randomNeighBor.indexRow + 1;
-                var indexWallToRemoveCol = Math.min(currentRoom.indexCol, randomNeighBor.indexCol);
+                var indexWallToRemoveRow = Math.min(currentRoom.indexRow, randomNeighBor.indexRow);
+                var indexWallToRemoveCol = currentRoom.indexCol +  randomNeighBor.indexCol + 1;
                 this.walls[indexWallToRemoveRow][indexWallToRemoveCol].visible = false;
                 //Make the chosen cell the current cell and mark it as visited
                 currentRoom = randomNeighBor;
@@ -135,6 +119,46 @@ class Maze {
         }
 
     }
+
+
+    generateDeadEnd = () => {
+        var walls = this.walls;
+        for (var indexRoomRow = 0; indexRoomRow < this.rooms.length; indexRoomRow++)
+        {
+            for (var indexRoomCol = 0; indexRoomCol < this.rooms[indexRoomRow].length; indexRoomCol++)
+            {
+                var aroom = this.rooms[indexRoomRow][indexRoomCol];
+
+                var neighboardWallsVisible = [{ row : 0, col : 0},
+                    { row : 0, col : 1},
+                    { row : 0, col : 2},
+                    { row : -1, col : 1}].reduce(function(accu, acell) {
+                        var indexWallRow = aroom.indexRow + acell.row;
+                        var indexWallCol = aroom.indexCol + acell.col;
+                                //console.log("is visited: ", rooms[indexRow][indexCol]);
+                        if (indexWallRow >= 0 && indexWallRow < walls.length
+                            && indexWallCol >= 0 && indexWallCol < walls[indexWallRow].length
+                        ) {
+                            if (walls[indexWallRow][indexWallCol].visible === true) {
+                                accu.push(walls[indexWallRow][indexWallCol]);
+                            }
+                        }
+                        return accu;
+                    },
+                    []
+                );
+                if (neighboardWallsVisible.length >= 3)
+                {
+                    neighboardWallsVisible.forEach((wall) =>
+                    {
+                        wall.visible = false;
+                    });
+                }
+            }
+        }
+
+    }
+
 
 }
 

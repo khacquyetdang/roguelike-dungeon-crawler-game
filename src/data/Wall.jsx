@@ -1,7 +1,9 @@
 class Wall {
 
-    constructor(x, y, width, height)
+    constructor(indexRow, indexCol, x, y, width, height)
     {
+        this.indexRow = indexRow;
+        this.indexCol = indexCol;
         this.x1 = x;
         this.x2 = x + width;
 

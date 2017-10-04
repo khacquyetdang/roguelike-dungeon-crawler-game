@@ -63,10 +63,10 @@ class App extends Component {
 
         ctx.beginPath();
         ctx.rect(0, 0, maze.map_size + 1 , maze.map_size + 1);
-        ctx.fillStyle = "blue";
+        ctx.fillStyle = "white";
         ctx.fill();
         ctx.closePath();
-
+        var textColor = "black";
 
         for (var indexRoomRow = 0; indexRoomRow < maze.rooms.length; indexRoomRow++)
         {
@@ -74,9 +74,12 @@ class App extends Component {
             {
                 var aroom = maze.rooms[indexRoomRow][indexRoomCol];
                 ctx.beginPath();
-                ctx.rect(aroom.x1, aroom.y1, aroom.width, aroom.height);
-                ctx.fillStyle = "blue";
+                ctx.rect(aroom.x1+ 1, aroom.y1+ 1, aroom.width - 1, aroom.height - 1);
+                ctx.fillStyle = "#E5E8E8";
                 ctx.fill();
+                ctx.font = "10px Arial";
+                ctx.fillStyle = textColor;
+                ctx.fillText("(" +aroom.indexRow +" , " + aroom.indexCol + ")",aroom.x1 + + aroom.width / 4 , aroom.centerY);
                 ctx.closePath();
             }
         }
@@ -86,26 +89,30 @@ class App extends Component {
             for (var indexWallCol = 0; indexWallCol < maze.walls[indexWallRow].length; indexWallCol++)
             {
                 var awall = maze.walls[indexWallRow][indexWallCol];
-                console.log("awall", awall);
                 if (awall.visible === true)
                 {
                     ctx.beginPath();
                     ctx.rect(awall.x1, awall.y1, awall.width, awall.height);
-                    ctx.fillStyle = "gray";
+                    ctx.fillStyle = "#F1C40F";
                     ctx.fill();
+                    ctx.font = "10px Arial";
+                    ctx.fillStyle = textColor;
+                    ctx.fillText("(" +awall.indexRow +"," + awall.indexCol + ")",awall.x1 + awall.width / 10 , awall.y1 + awall.height / 2 );
                     ctx.closePath();
                 }
             }
         }
     }
+
+
     componentDidMount(){
         var amap = new Map(30, 100, 2000, 960);
         console.log("rooms", amap.rooms);
         this.drawRooms(amap);
         this.drawCorridors(amap);
 
-        //constructor(roomSize, wallWidth, roomRow, roomCol, map_size)
-        var maze = new Maze(20, 5, 10, 10, 800);
+        //constructor(roomSize, wallWidth, map_size)
+        var maze = new Maze(50, 25, 800);
         console.log("maze : ", maze);
         this.drawMaze(maze);
     }
