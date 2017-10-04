@@ -1,4 +1,4 @@
-class Room {
+class Wall {
 
     constructor(x, y, width, height)
     {
@@ -12,15 +12,8 @@ class Room {
         this.height = height;
         this.centerX = Math.floor((this.x1 + this.x2) /2);
         this.centerY = Math.floor((this.y1 + this.y2) /2);
-    }
-
-
-
-    intersects = (room) => {
-        return (this.x1 <= room.x2 && this.x2 >= room.x1 &&
-            this.y1 <= room.y2 && this.y2 >= room.y1
-        );
+        this.visible = true;
     }
 }
 
-export default Room;
+export default Wall;

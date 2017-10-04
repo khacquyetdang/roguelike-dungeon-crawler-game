@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "gh-pages": "^1.0.0",
         "node-sass-chokidar": "^0.0.3",
         "npm-run-all": "^4.0.2",
         "react": "^15.6.1",
@@ -13,6 +14,7 @@
     "devDependencies": {
         "react-scripts": "1.0.12"
     },
+    "homepage": "https://khacquyetdang.github.io/roguelike-dungeon-crawler-game",
     "scripts": {
         "build-css": "node-sass-chokidar src/ -o src/generated",
         "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/generated --watch --recursive",

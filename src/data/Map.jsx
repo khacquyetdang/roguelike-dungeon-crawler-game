@@ -30,8 +30,8 @@ class Map {
             var newRoom = new Room(x, y, w, h);
 
             var failed = false;
-            for (var index = 0; index < this.rooms.length; index++) {
-                var otherRoom = this.rooms[index];
+            for (var indexRoom = 0; indexRoom < this.rooms.length; indexRoom++) {
+                var otherRoom = this.rooms[indexRoom];
                 if (newRoom.intersects(otherRoom)) {
                     failed = true;
                     break;
