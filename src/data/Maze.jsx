@@ -1,5 +1,6 @@
 import RoomMaze from './RoomMaze';
 import Wall from './Wall';
+import { getRandomInt } from './Utils';
 
 class Maze {
     constructor(roomSize, wallWidth, map_size)
@@ -11,12 +12,10 @@ class Maze {
         this.roomCol = Math.floor((map_size) / (roomSize +  wallWidth));
         this.generateMapMatrix();
         this.generateMaze();
-        this.generateDeadEnd();
+        //this.generateDeadEnd();
     }
 
-    getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+
 
 
     generateMapMatrix = () => {
@@ -101,7 +100,7 @@ class Maze {
             if (unVisitedNeighBors.length >= 1)
             {
                 // Choose randomly one of the unvisited neighbours
-                var randomNeighBor = unVisitedNeighBors[this.getRandomInt(0, unVisitedNeighBors.length - 1)];
+                var randomNeighBor = unVisitedNeighBors[getRandomInt(0, unVisitedNeighBors.length - 1)];
                 // push the current cell to the stack
                 stack.push(currentRoom);
                 // remove the walls
@@ -134,7 +133,7 @@ class Maze {
                     { row : 0, col : 2},
                     { row : -1, col : 1}].reduce(function(accu, acell) {
                         var indexWallRow = aroom.indexRow + acell.row;
-                        var indexWallCol = aroom.indexCol + acell.col;
+                        var indexWallCol = aroom.indexCol * 2 + acell.col;
                                 //console.log("is visited: ", rooms[indexRow][indexCol]);
                         if (indexWallRow >= 0 && indexWallRow < walls.length
                             && indexWallCol >= 0 && indexWallCol < walls[indexWallRow].length
@@ -156,7 +155,6 @@ class Maze {
                 }
             }
         }
-
     }
 
 

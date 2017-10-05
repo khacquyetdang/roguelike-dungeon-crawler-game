@@ -3,7 +3,8 @@ import Game from './components/Game';
 import Map from './data/Map';
 
 import Maze from './data/Maze';
-
+import { drawBSPTree, createWallFromBSPTree, createHallFromBSPTree, testHallDistanceForWall } from './data/BSPDungeon';
+import generateDungeonTreeForMap from './data/BSPDungeon';
 import './App.css';
 
 class App extends Component {
@@ -79,7 +80,7 @@ class App extends Component {
                 ctx.fill();
                 ctx.font = "10px Arial";
                 ctx.fillStyle = textColor;
-                ctx.fillText("(" +aroom.indexRow +" , " + aroom.indexCol + ")",aroom.x1 + + aroom.width / 4 , aroom.centerY);
+                //ctx.fillText("(" +aroom.indexRow +"," + aroom.indexCol + ")",aroom.x1 + + aroom.width / 4 , aroom.centerY);
                 ctx.closePath();
             }
         }
@@ -97,7 +98,7 @@ class App extends Component {
                     ctx.fill();
                     ctx.font = "10px Arial";
                     ctx.fillStyle = textColor;
-                    ctx.fillText("(" +awall.indexRow +"," + awall.indexCol + ")",awall.x1 + awall.width / 10 , awall.y1 + awall.height / 2 );
+                    //ctx.fillText("(" +awall.indexRow +"," + awall.indexCol + ")",awall.x1 + awall.width / 10 , awall.y1 + awall.height / 2 );
                     ctx.closePath();
                 }
             }
@@ -105,32 +106,57 @@ class App extends Component {
     }
 
 
-    componentDidMount(){
+    componentDidMount() {
+        /*
         var amap = new Map(30, 100, 2000, 960);
         console.log("rooms", amap.rooms);
-        this.drawRooms(amap);
-        this.drawCorridors(amap);
+        //this.drawRooms(amap);
+        //this.drawCorridors(amap);
 
         //constructor(roomSize, wallWidth, map_size)
-        var maze = new Maze(50, 25, 800);
+        //var maze = new Maze(30, 30, 900);
         console.log("maze : ", maze);
-        this.drawMaze(maze);
+        this.drawMaze(maze);*/
+
+        testHallDistanceForWall();
+        var minWidth = 100;
+        var minHeight = 100;
+        var mapSize = 960;
+        var map = generateDungeonTreeForMap(0, 0, mapSize, mapSize, minWidth, minHeight, mapSize, mapSize);
+        drawBSPTree(map, this.gameCanvas.getContext('2d'), 0);
+
+        //this.gameCanvas
+        console.log("mapbsp ", map);
+        var treeRoom = createWallFromBSPTree(map, minWidth / 2, minHeight / 2);
+
+        var treeWithRoomAndHall = createHallFromBSPTree(treeRoom, 10);
+
+        console.log("leafs : ", treeWithRoomAndHall.getLeafs());
+        console.log("map bsp with wall ", treeRoom);
+        console.log("map bsp with wall and hall ", treeWithRoomAndHall);
+        drawBSPTree(treeWithRoomAndHall, this.canvasMaze.getContext('2d'), 0);
     }
+
     render() {
+
+        //console.log("map BSPTree", map);
         return (
             <div className="App">
-                <div className="canvasContainer">
-                    <canvas id="canvasMaze"
-                        style={{margin : 10}}
-                        width='960px' height='960px'
-                        ref={(camaze) => { this.canvasMaze = camaze}}>
-                    </canvas>
-                </div>
+                {
 
                 <div className="canvasContainer">
                     <canvas id="myCanvas"
                         width='960px' height='960px'
                         ref={(ca) => { this.gameCanvas = ca}}>
+                    </canvas>
+                </div>
+                }
+
+                <div className="canvasContainer">
+                    <canvas id="canvasMaze"
+                        style={{margin : 10}}
+                        width='960px' height='960px'
+                        ref={(camaze) => { this.canvasMaze = camaze}}>
                     </canvas>
                 </div>
                 {
