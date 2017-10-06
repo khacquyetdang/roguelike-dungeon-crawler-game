@@ -2,6 +2,17 @@ import { getRandomInt, distance } from './Utils';
 import BSPTree from './BSPTree';
 import randomColor from 'randomcolor';
 
+/**
+ * @param {*} x the initial coord normally set to zero
+ * @param {*} y the intitial y coord normally set to zero
+ * @param {*} dungeonWidth the width of dungeon
+ * @param {*} dungeonHeight the height of dungeon
+ * @param {*} minDungeonWidth the min width of child dungeon
+ * @param {*} minDungeonHeight the min height of child dungeon
+ * @param {*} mapWidth the width of games map (games)
+ * @param {*} mapHeight the height of games maps
+ * @description build the dungeon untill reach the min dungeonWidth and dungeonHeight
+ */
 export default function generateDungeonTreeForMap(x, y, dungeonWidth, dungeonHeight, minDungeonWidth, minDungeonHeight, mapWidth, mapHeight)
 {
     var direction = getRandomInt(0, 1);
