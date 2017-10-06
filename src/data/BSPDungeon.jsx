@@ -80,6 +80,14 @@ export default function generateDungeonTreeForMap(x, y, dungeonWidth, dungeonHei
     }
 }
 
+/**
+ * 
+ * @param {*} tree 
+ * @param {*} minWidth 
+ * @param {*} minHeight 
+ * @description create hall for all room in the tree. A hall (or corridor) is 
+ * to connect two room toghether
+ */
 export  function createWallFromBSPTree(tree, minWidth, minHeight)
 {
     if (tree === null)
@@ -138,8 +146,12 @@ export  function createHallFromBSPTree(tree, hallSize)
 
 
 /**
-*
-*/
+ * 
+ * @param {*} firstChild the left child 
+ * @param {*} secondChild the right child
+ * @param {*} hallSize the hall size the minimum sise of the hall.
+ * @returns the shortest hall that connect two leaft of the tree.
+ */
 export function bestHallForTwoTree(firstChild, secondChild, hallSize)
 {
     if (firstChild === null || secondChild === null) {
@@ -173,6 +185,12 @@ export function bestHallForTwoTree(firstChild, secondChild, hallSize)
 
 }
 
+/**
+ * @param {*} firstChild first leaft
+ * @param {*} secondChild second leaft
+ * return the distance between two leaf, if the leaf is not face to face, 
+ * the distance is then maximum integer number.
+ */
 export function distancebetweenBSPLeaf(firstChild, secondChild)
 {
     var x1 = firstChild.x;
@@ -295,7 +313,13 @@ export function createHallForBSPLeaf(firstChild, secondChild, wallSize)
     return hallTree;
 }
 
-
+/**
+ * @param {*} tree an bsp tree
+ * @param {*} ctx context of 2d canvas
+ * @param {*} color 
+ * @param {*} fatherIndex 
+ * draw the tree in the canvas
+ */
 export  function drawBSPTree(tree, ctx, color, fatherIndex)
 {
     if (tree === null)
