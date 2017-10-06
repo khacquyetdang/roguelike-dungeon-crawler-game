@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "gh-pages": "^1.0.0",
+        "lodash": "^4.17.4",
         "node-sass-chokidar": "^0.0.3",
         "npm-run-all": "^4.0.2",
         "randomcolor": "^0.5.3",

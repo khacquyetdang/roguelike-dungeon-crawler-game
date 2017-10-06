@@ -3,13 +3,17 @@ import Game from './components/Game';
 import Map from './data/Map';
 
 import Maze from './data/Maze';
-import { drawBSPTree, createWallFromBSPTree, createHallFromBSPTree, testHallDistanceForWall } from './data/BSPDungeon';
+import { drawBSPTree, createWallFromBSPTree, createHallFromBSPTree, testHallDistanceForWall, generateGroundFromTree} from './data/BSPDungeon';
 import generateDungeonTreeForMap from './data/BSPDungeon';
 import './App.css';
 
 class App extends Component {
 
+    constructor() {
+        super();
 
+        this.state = { ground : null };
+    }
     drawRooms = (amap) => {
         var ctx = this.gameCanvas.getContext('2d');
         ctx.beginPath();
@@ -119,10 +123,11 @@ class App extends Component {
         this.drawMaze(maze);*/
 
         testHallDistanceForWall();
-        var minWidth = 100;
-        var minHeight = 100;
-        var mapSize = 960;
-        var map = generateDungeonTreeForMap(0, 0, mapSize, mapSize, minWidth, minHeight, mapSize, mapSize);
+        var minWidth = 20;
+        var minHeight = 20;
+        var mapSize = 100;
+        var mapSizeHeight = 100;
+        var map = generateDungeonTreeForMap(0, 0, mapSize, mapSizeHeight, minWidth, minHeight, mapSize, mapSize);
         drawBSPTree(map, this.gameCanvas.getContext('2d'), 0);
 
         //this.gameCanvas
@@ -135,6 +140,9 @@ class App extends Component {
         console.log("map bsp with wall ", treeRoom);
         console.log("map bsp with wall and hall ", treeWithRoomAndHall);
         drawBSPTree(treeWithRoomAndHall, this.canvasMaze.getContext('2d'), 0);
+
+        var ground = generateGroundFromTree(treeWithRoomAndHall);
+        this.setState({ ground : ground});
     }
 
     render() {
@@ -160,7 +168,7 @@ class App extends Component {
                     </canvas>
                 </div>
                 {
-                //<Game ></Game>
+                <Game ground={this.state.ground}></Game>
                 }
             </div>
         );

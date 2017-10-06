@@ -1,7 +1,10 @@
 import { getRandomInt, distance } from './Utils';
 import BSPTree from './BSPTree';
 import randomColor from 'randomcolor';
-
+import WallCell from './WallCell';
+import HallCell from './HallCell';
+import RoomCell from './RoomCell';
+import _ from 'lodash';
 /**
  * @param {*} x the initial coord normally set to zero
  * @param {*} y the intitial y coord normally set to zero
@@ -359,6 +362,59 @@ export  function drawBSPTree(tree, ctx, color, fatherIndex)
         }
     }
 }
+
+
+/**
+ * @param {*} tree an bsp tree
+ * draw the tree in the canvas
+ */
+export  function generateGroundFromTree(tree)
+{
+    if (tree === null)
+    {
+        return null;
+    }
+    else if (tree instanceof BSPTree){
+        var matrix = new Array(tree.width);
+        for (var i = 0; i < tree.width; i++) {
+            matrix[i] = new Array(tree.height);
+            for (var j = 0; j < tree.height; j++) {
+                matrix[i][j] = new WallCell(i, j);
+            }
+        }
+
+        var leafs = tree.getLeafs();
+        for (var leafIndex = 0; leafIndex < leafs.length; leafIndex++)
+        {
+            var leaf = leafs[leafIndex];
+            for (var coordLeafX = leaf.x; coordLeafX < leaf.x + leaf.width; coordLeafX++)
+            {
+                for (var coordLeafY = leaf.y; coordLeafY < leaf.y + leaf.height; coordLeafY++)
+                {
+                    matrix[coordLeafX][coordLeafY] = new RoomCell(coordLeafX, coordLeafY, leafIndex);
+                }
+            }
+        }
+
+        var halls = tree.getHalls();
+        for (var hallIndex = 0; hallIndex < halls.length; hallIndex++)
+        {
+            var hall = halls[hallIndex];
+            for (var coordHallX = hall.x; coordHallX < hall.x + hall.width; coordHallX++)
+            {
+                for (var coordHallY = hall.y; coordHallY < hall.y + hall.height; coordHallY++)
+                {
+                    matrix[coordHallX][coordHallY] = new HallCell(coordHallX, coordHallY, hallIndex);
+                }
+            }
+        }
+        
+
+        return _.unzip(matrix);
+    }
+    return null;
+}
+
 
 export function testHallDistanceForWall()
 {

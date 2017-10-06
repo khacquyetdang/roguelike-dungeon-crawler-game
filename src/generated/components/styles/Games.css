@@ -3,17 +3,41 @@
   flex-direction: row; }
 
 .GameCell {
-  width: 50px;
-  height: 50px;
-  max-width: 50px;
-  min-width: 50px;
-  max-height: 50px;
-  min-height: 50px;
+  width: 20px;
+  height: 20px;
+  max-width: 20px;
+  min-width: 20px;
+  max-height: 20px;
+  min-height: 20px;
   display: flex;
   align-items: center; }
 
 .Wall {
-  background-image: url("/image/wall.png"); }
+  background-image: url("/image/wall.png");
+  background-color: "black"; }
 
 .Ground {
-  background-image: url("/image/ground.png"); }
+  background-image: url("/image/ground.png");
+  /*background-color: rgb(38, 17, 158);*/ }
+
+.Room_1 {
+  background-image: url("/image/room_1.png");
+  /*background-color: rgb(129, 224, 20);*/ }
+
+.Room_2 {
+  background-image: url("/image/room_2.png");
+  /*
+    background-color: rgb(219, 199, 16);*/ }
+
+.Room_3 {
+  background-image: url("/image/room_3.png");
+  /*
+    background-color: rgb(168, 159, 143);*/ }
+
+.Room_4 {
+  background-image: url("/image/room_4.png");
+  /*background-color: rgb(236, 12, 42);*/ }
+
+.Hall {
+  background-image: url("/image/hall.png");
+  /*background-color: rgb(60, 33, 218);*/ }

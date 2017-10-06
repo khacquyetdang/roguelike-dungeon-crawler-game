@@ -12,8 +12,7 @@ class BSPTree {
      * @param {*} childLeft 
      * @param {*} childRight 
      */
-    constructor(x, y, width, height, childLeft, childRight)
-    {
+    constructor(x, y, width, height, childLeft, childRight) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -26,23 +25,51 @@ class BSPTree {
      * @description return all the leafs of the the tree in an array
      */
     getLeafs = () => {
-        if (this.isLeaf())
-        {
+        if (this.isLeaf()) {
             return [this];
         }
         else {
             var childLeft = this.childLeft;
             var childRight = this.childRight;
             var leafs = [];
-            if (childLeft !== null)
-            {
+            if (childLeft !== null) {
                 leafs = leafs.concat(childLeft.getLeafs());
             }
-            if (childRight !== null)
-            {
-                leafs= leafs.concat(childRight.getLeafs());
+            if (childRight !== null) {
+                leafs = leafs.concat(childRight.getLeafs());
             }
             return leafs;
+        }
+    }
+
+    /**
+ * @description return all the leafs of the the tree in an array
+ */
+    getHalls = () => {
+        if (this === null)
+        {
+            return [];
+        }
+        if (this.isLeaf()) {
+            if (this.hall !== undefined && this.hall !== null) {
+                return [this.hall];
+            }
+            return [];
+        }
+        else {
+            var childLeft = this.childLeft;
+            var childRight = this.childRight;
+            var halls = [];
+            if (this.hall !== undefined && this.hall !== null) {
+                halls.push(this.hall);
+            }
+            if (childLeft !== null) {
+                halls =  halls.concat(childLeft.getHalls());
+            }
+            if (childRight !== null) {
+                halls = halls.concat(childRight.getHalls());
+            }
+            return halls;
         }
     }
     /**

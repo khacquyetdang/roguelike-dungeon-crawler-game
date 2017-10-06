@@ -6,7 +6,6 @@ class Wall {
         this.indexCol = indexCol;
         this.x1 = x;
         this.x2 = x + width;
-
         this.y1 = y;
         this.y2 = y + height;
 

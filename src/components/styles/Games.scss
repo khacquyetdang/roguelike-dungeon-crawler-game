@@ -1,0 +1,53 @@
+.GameRow {
+    display: flex;
+    flex-direction: row;
+}
+
+$cell_size: 20px;
+.GameCell {
+    width: $cell_size;
+    height: $cell_size;
+    max-width: $cell_size;
+    min-width: $cell_size;
+    max-height: $cell_size;
+    min-height: $cell_size;
+    display: flex;
+    align-items: center;
+}
+
+.Wall {
+    background-image: url('/image/wall.png');
+    background-color: "black"
+}
+
+.Ground {
+    background-image: url('/image/ground.png');
+    /*background-color: rgb(38, 17, 158);*/
+}
+
+.Room_1 {
+    background-image: url('/image/room_1.png');
+    /*background-color: rgb(129, 224, 20);*/
+}
+
+.Room_2 {
+    background-image: url('/image/room_2.png');
+    /*
+    background-color: rgb(219, 199, 16);*/
+}
+
+.Room_3 {
+    background-image: url('/image/room_3.png');
+    /*
+    background-color: rgb(168, 159, 143);*/
+}
+
+.Room_4 {
+    background-image: url('/image/room_4.png');
+    /*background-color: rgb(236, 12, 42);*/
+}
+
+.Hall {
+    background-image: url('/image/hall.png');
+    /*background-color: rgb(60, 33, 218);*/
+}
