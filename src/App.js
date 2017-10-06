@@ -125,8 +125,8 @@ class App extends Component {
         testHallDistanceForWall();
         var minWidth = 20;
         var minHeight = 20;
-        var mapSize = 100;
-        var mapSizeHeight = 100;
+        var mapSize = 1000;
+        var mapSizeHeight = 1000;
         var map = generateDungeonTreeForMap(0, 0, mapSize, mapSizeHeight, minWidth, minHeight, mapSize, mapSize);
         drawBSPTree(map, this.gameCanvas.getContext('2d'), 0);
 
@@ -136,9 +136,6 @@ class App extends Component {
 
         var treeWithRoomAndHall = createHallFromBSPTree(treeRoom, 10);
 
-        console.log("leafs : ", treeWithRoomAndHall.getLeafs());
-        console.log("map bsp with wall ", treeRoom);
-        console.log("map bsp with wall and hall ", treeWithRoomAndHall);
         drawBSPTree(treeWithRoomAndHall, this.canvasMaze.getContext('2d'), 0);
 
         var ground = generateGroundFromTree(treeWithRoomAndHall);
@@ -149,12 +146,12 @@ class App extends Component {
 
         //console.log("map BSPTree", map);
         return (
-            <div className="App">
+            <div className="App" >
                 {
 
                 <div className="canvasContainer">
                     <canvas id="myCanvas"
-                        width='960px' height='960px'
+                        width='100px' height='100px'
                         ref={(ca) => { this.gameCanvas = ca}}>
                     </canvas>
                 </div>
@@ -163,7 +160,7 @@ class App extends Component {
                 <div className="canvasContainer">
                     <canvas id="canvasMaze"
                         style={{margin : 10}}
-                        width='960px' height='960px'
+                        width='100px' height='100px'
                         ref={(camaze) => { this.canvasMaze = camaze}}>
                     </canvas>
                 </div>
