@@ -38,7 +38,11 @@ class Game extends Component {
             this.setState({ value: event.target.value })
         }
     }
-    
+
+    centerMapToPlayer() {
+
+    }
+
     render() {
 
         var game2DArr = this.props.games.ground;
@@ -47,10 +51,12 @@ class Game extends Component {
         }
 
         console.log("player ", this.props.games.player);
-        game2DArr[this.props.games.player.row][this.props.games.player.col] = this.props.games.player;
 
+        var { player } = this.props.games;
 
-        game2DArr = _.slice(game2DArr, this.state.y, this.state.y + 25);
+        var game2DArr = _.map(game2DArr, _.clone);
+        player.parent = game2DArr[player.row][player.col];
+        game2DArr = _.slice(game2DArr, this.state.y, this.state.y + 15);
         game2DArr = game2DArr.map(row => {
             return _.slice(row, this.state.x, this.state.x + 50);
         });
@@ -58,7 +64,13 @@ class Game extends Component {
         var gameMapDiv = game2DArr.map((row, indexRow) => {
             var divRow = row.map(
                 (cell, index) => {
-                    return <div key={index}>{cell.render()}</div>;
+                    if (player.row === indexRow && player.col === index) {
+                        //<div key={index}>{player.render()}</div>;
+                        return <div key={index}>{player.render()}</div>;
+                    } else {
+                        return <div key={index}>{cell.render()}</div>;
+                        //return <div className="GameCell" style={{backgroundColor: 'red'}}key={index}></div>
+                    }
                 }
             );
             return <div key={indexRow} className="GameRow">{divRow}</div>

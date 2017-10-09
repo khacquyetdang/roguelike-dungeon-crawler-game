@@ -7,7 +7,8 @@
   display: flex;
   flex-direction: row; }
 
-.GameCell {
+.GameCell,
+.Player {
   width: 34px;
   height: 34px;
   max-width: 34px;
@@ -16,36 +17,3 @@
   min-height: 34px;
   display: flex;
   align-items: center; }
-
-.Wall {
-  background-image: url("/image/wall_1.png");
-  background-color: "black"; }
-
-.Ground {
-  background-image: url("/image/ground.png");
-  /*background-color: rgb(38, 17, 158);*/ }
-
-.Room_1 {
-  background-image: url("/image/room_1.png");
-  /*background-color: rgb(129, 224, 20);*/ }
-
-.Room_2 {
-  background-image: url("/image/room_2.png");
-  /*
-    background-color: rgb(219, 199, 16);*/ }
-
-.Room_3 {
-  background-image: url("/image/room_3.png");
-  /*
-    background-color: rgb(168, 159, 143);*/ }
-
-.Room_4 {
-  background-image: url("/image/room_4.png");
-  /*background-color: rgb(236, 12, 42);*/ }
-
-.Hall {
-  background-image: url("/image/hall.png");
-  /*background-color: rgb(60, 33, 218);*/ }
-
-.Player_Warrior {
-  background-image: url("/image/player/warrior.png"); }

@@ -13,17 +13,38 @@ class RoomCell extends Cell {
         this.roomIndex = roomIndex;
     }
 
-    render() {
+    getStyle = () => {
         switch (this.roomIndex) {
             case 0:
-                return <div className="GameCell Room_1"></div>;
+                return styles.Room_1;
             case 1:
-                return <div className="GameCell Room_2"></div>;
+                return styles.Room_2;
             case 2:
-                return <div className="GameCell Room_3"></div>;
+                return styles.Room_3;
             default:
-                return <div className="GameCell Room_4"></div>;
+                return styles.Room_4;
         }
+    }
+    render() {
+        return <div className="GameCell" style={this.getStyle()}></div>;
+    }
+}
+
+const styles = {
+    Room_1: {
+        backgroundImage: "url(" + "/image/room_1.png)",
+    },
+    Room_2: {
+        backgroundImage: "url(" + "/image/room_2.png)",
+    },
+
+    Room_3: {
+        backgroundImage: "url(" + "/image/room_3.png)",
+    },
+
+    Room_4: {
+        backgroundImage: "url(" + "/image/room_4.png)",
     }
 }
 export default RoomCell;
+

@@ -6,6 +6,21 @@ export const PlayerEnum = {
     BERSERKER: 3,
     MAGE: 4
 };
+
+const styles = {
+    warrior: {
+        backgroundImage: "url(" + "/image/player/warrior.png" + ")",
+    },
+    gladiator: {
+        backgroundImage: "url(" + "/image/player/gladiator.png" + ")",
+    },
+    berserker: {
+        backgroundImage: "url(" + "/image/player/berserker.png" + ")",
+    },
+    mage: {
+        backgroundImage: "url(" + "/image/player/mage.png" + ")",
+    }
+}
 class Player extends Cell {
     /**
      * @param {number} row 
@@ -18,26 +33,50 @@ class Player extends Cell {
         this.type = type;
     }
 
+    getParentStyles = () => {
+        if (this.parent !== undefined && this.parent !== null) {
+            return this.parent.getStyle();
+        }
+        return {};
+    }
     render() {
         switch (this.type) {
             case PlayerEnum.WARRIOR: {
                 return (<div
-                    className="GameCell Player_Warrior">
+                    className="GameCell"
+                    style={this.getParentStyles()}>
+                    <div
+                        className="Player"
+                        style={styles.warrior}>
+                    </div>
                 </div>);
             }
             case PlayerEnum.GLADIATOR: {
                 return (<div
-                    className="GameCell Player_Gladiator">
+                    className="GameCell"
+                    style={this.getParentStyles()}>
+                    <div
+                        className="Player"
+                        style={styles.gladiator}>
+                    </div>
                 </div>);
             }
             case PlayerEnum.BERSERKER: {
                 return (<div
-                    className="GameCell Player_Berserker">
+                    className="GameCell"
+                    style={this.getParentStyles()}>
+                    <div
+                        className="Player"
+                        style={styles.berserker} />
                 </div>);
             }
             case PlayerEnum.MAGE: {
                 return (<div
-                    className="GameCell Player_Mage">
+                    className="GameCell"
+                    style={this.getParentStyles()}>
+                    <div
+                        className="Player"
+                        style={styles.mage} />
                 </div>);
             }
 

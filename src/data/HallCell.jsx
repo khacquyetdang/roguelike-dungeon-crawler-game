@@ -14,12 +14,20 @@ class HallCell extends Cell {
         this.hallIndex = hallIndex;
     }
 
+    getStyle = () =>  {
+        return styles;
+    }
     render() {
         return (
             <div
-                className="GameCell Hall">
+                className="GameCell"
+                style={styles}>
             </div>
         );
     }
+}
+
+const styles = {
+        backgroundImage: "url(" +"/image/hall.png" +")",    
 }
 export default HallCell;

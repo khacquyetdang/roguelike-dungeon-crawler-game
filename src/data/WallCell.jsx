@@ -11,10 +11,17 @@ class WallCell extends Cell {
         super(row, col);
     }
 
+    getStyle = () =>  {
+        return styles;
+    }
     render() {
         return (<div
-            className="GameCell Wall">
+            className="GameCell"
+            style={styles}>
         </div>);
     }
+}
+const styles = {
+    backgroundImage: "url(" + "/image/wall_1.png)",
 }
 export default WallCell;
