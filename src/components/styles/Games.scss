@@ -1,9 +1,14 @@
+.Toolsbar {
+    display: flex;
+    flex-direction: row;
+}
+
 .GameRow {
     display: flex;
     flex-direction: row;
 }
 
-$cell_size: 20px;
+$cell_size: 34px;
 .GameCell {
     width: $cell_size;
     height: $cell_size;
@@ -16,7 +21,7 @@ $cell_size: 20px;
 }
 
 .Wall {
-    background-image: url('/image/wall.png');
+    background-image: url('/image/wall_1.png');
     background-color: "black"
 }
 

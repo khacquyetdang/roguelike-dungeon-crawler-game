@@ -14,23 +14,24 @@ class Game extends Component {
         }
     }
     onKeyPress = (event) => {
+        event.preventDefault();
         console.log("onKeyPress ", event.key);
         switch (event.key) {
-            case "ArrowDow":
-                var x = this.state.x + 1;
-                this.setState({ x: x });
+            case "ArrowDown":
+                var y = Math.min(this.state.y + 1, this.props.ground.length);
+                this.setState({ y: y });
                 break;
             case "ArrowUp":
-                var x = this.state.x - 1;
-                this.setState({ x: x });
+                var y = Math.max(this.state.y - 1, 0);
+                this.setState({ y: y });
                 break;
             case "ArrowLeft":
-                var y = this.state.y - 1;
-                this.setState({ y: y });
+                var x = Math.max(this.state.x - 1, 0);
+                this.setState({ x: x });
                 break;
             case "ArrowRight":
-                var y = this.state.y + 1;
-                this.setState({ y: y });
+                var x = this.state.x + 1;
+                this.setState({ x: x });
                 break;
         }
         if (event.key == 'Enter') {
@@ -44,39 +45,21 @@ class Game extends Component {
             return <div></div>;
         }
 
-        game2DArr = _.slice(game2DArr, this.state.x, this.state.x + 30);
+        game2DArr = _.slice(game2DArr, this.state.y, this.state.y + 25);
         game2DArr = game2DArr.map(row => {
-            return _.slice(row, this.state.y, this.state.y + 30);
+            return _.slice(row, this.state.x, this.state.x + 50);
         });
 
         var gameMapDiv = game2DArr.map((row, indexRow) => {
-            var divRow = row.map((cell, indexCell) => {
-                if (cell instanceof WallCell) {
-                    return <div key={indexCell} className="GameCell Wall"></div>
+            var divRow = row.map(
+                (cell, index) => {
+                    return <div key={index}>{cell.render()}</div>;
                 }
-                else {
-                    if (cell instanceof RoomCell) {
-
-                        switch (cell.roomIndex % 4) {
-                            case 0:
-                                return <div key={indexCell} className="GameCell Room_1"></div>;
-                            case 1:
-                                return <div key={indexCell} className="GameCell Room_2"></div>;
-                            case 2:
-                                return <div key={indexCell} className="GameCell Room_3"></div>;
-                            default:
-                                return <div key={indexCell} className="GameCell Room_4"></div>;
-                        }
-                    }
-                    if (cell instanceof HallCell) {
-                        return <div key={indexCell} className="GameCell Hall"></div>;
-                    }
-                }
-            });
+            );
             return <div key={indexRow} className="GameRow">{divRow}</div>
         });
         return (
-            <div tabIndex="0" onKeyDown={this.onKeyPress}>Hello world
+            <div tabIndex="0" onKeyDown={this.onKeyPress}>
                 <div
                     className="gameMap" >
                     {gameMapDiv}

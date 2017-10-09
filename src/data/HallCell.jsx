@@ -1,5 +1,7 @@
 "use strict";
 import Cell from './Cell';
+import React, { Component } from 'react';
+
 
 class HallCell extends Cell {
     /**
@@ -10,6 +12,14 @@ class HallCell extends Cell {
     constructor(row, col, hallIndex) {
         super(row, col);
         this.hallIndex = hallIndex;
+    }
+
+    render() {
+        return (
+            <div
+                className="GameCell Hall">
+            </div>
+        );
     }
 }
 export default HallCell;

@@ -4,6 +4,8 @@ class Cell {
         this.row = row;
         this.col = col;
     }
+    
+    
 }
 
 export default Cell;
