@@ -1,6 +1,7 @@
 .Toolsbar {
   display: flex;
-  flex-direction: row; }
+  flex-direction: row;
+  margin: 10px; }
 
 .GameRow {
   display: flex;

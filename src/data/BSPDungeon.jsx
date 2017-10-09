@@ -117,7 +117,11 @@ export  function createWallFromBSPTree(tree, minWidth, minHeight)
     }
 }
 
-
+/**
+ * @param {*} tree with only room, no hall
+ * @param {*} hallSize 
+ * @returns {BSPTree} new BSP Tree with room and hall 
+ */
 export  function createHallFromBSPTree(tree, hallSize)
 {
     if (tree === null)
