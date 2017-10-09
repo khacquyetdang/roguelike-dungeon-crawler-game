@@ -11,25 +11,26 @@ export const initialState = {
     nextLevel: 100,
     dungeon: 0
 }
-export function game(state = initialState, action)
-switch (action.type) {
-    case SET_PLAYER: {
-        return Object.assign({}, state, {
-            player: action.player
-        });
-    }
-    case SET_MAPWITHROOMANDHALL: {
-        return Object.assign({}, state, {
-            ground: action.mapWithRoomAndHall
-        });
-    }
-    case SET_GROUND: {
-        return Object.assign({}, state, {
-            ground: action.ground
-        });
-    }
-    default: {
-        return state;
-    }
+export default function game(state = initialState, action) {
+    switch (action.type) {
+        case SET_PLAYER: {
+            return Object.assign({}, state, {
+                player: action.player
+            });
+        }
+        case SET_MAPWITHROOMANDHALL: {
+            return Object.assign({}, state, {
+                mapWithRoomAndHall: action.mapWithRoomAndHall
+            });
+        }
+        case SET_GROUND: {
+            return Object.assign({}, state, {
+                ground: action.ground
+            });
+        }
+        default: {
+            return state;
+        }
 
+    }
 }

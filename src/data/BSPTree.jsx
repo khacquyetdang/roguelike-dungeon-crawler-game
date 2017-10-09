@@ -23,6 +23,7 @@ class BSPTree {
 
     /**
      * @description return all the leafs of the the tree in an array
+     * leaf is the same than the room
      */
     getLeafs = () => {
         if (this.isLeaf()) {

@@ -1,7 +1,9 @@
 import React, {
     Component
 } from 'react';
-import { connect } from 'react-redux';
+import {
+    connect
+} from 'react-redux';
 import Toolsbar from './Toolsbar';
 import Game from './Game';
 import Map from '../data/Map';
@@ -9,43 +11,60 @@ import Map from '../data/Map';
 import Maze from '../data/Maze';
 import {
     drawBSPTree,
-    createWallFromBSPTree,
+    createRoomFromBSPTree,
     createHallFromBSPTree,
     testHallDistanceForWall,
     generateGroundFromTree
 } from '../data/BSPDungeon';
 import generateDungeonTreeForMap from '../data/BSPDungeon';
 import '../generated/components/styles/App.css';
-
-
-import {setMapwithroomandhall, setGround } from '../actions';
-
+import {
+    setMapWithRoomAndhall,
+    setGround,
+    setPlayer
+} from '../actions';
+import {
+    getRandomInt
+} from '../data/Utils';
+import Player, {
+    PlayerEnum
+} from './Player';
 class App extends Component {
 
     constructor() {
         super();
 
         this.state = {
-            ground: null
+            ground: null,
+            mapWithRoomAndHall: null
         };
     }
+
+    generatePlayerInit = (treeWithRoomAndHall) => {
+        var room1 = treeWithRoomAndHall.getLeafs()[0];
+        var row = getRandomInt(room1.y, room1.y + room1.height);
+        var col = getRandomInt(room1.x, room1.x + room1.width);
+
+        var player = new Player(row, col, PlayerEnum.WARRIOR, 100);
+        this.props.setPlayer(player);
+    }
+
     componentDidMount() {
 
         var minWidth = 15;
         var minHeight = 15;
-        var mapSizeWidth = 100;
-        var mapSizeHeight = 100;
+        var mapSizeWidth = 50;
+        var mapSizeHeight = 50;
         var map = generateDungeonTreeForMap(0, 0, mapSizeWidth, mapSizeHeight, minWidth, minHeight, mapSizeWidth, mapSizeHeight);
 
         //this.gameCanvas
         console.log("mapbsp ", map);
-        var treeRoom = createWallFromBSPTree(map, minWidth / 2, minHeight / 2);
+        var treeRoom = createRoomFromBSPTree(map, minWidth / 2, minHeight / 2);
 
         var treeWithRoomAndHall = createHallFromBSPTree(treeRoom, 10);
 
         var ground = generateGroundFromTree(treeWithRoomAndHall);
 
-        
 
         this.setState({
             mapWithRoomAndHall: treeWithRoomAndHall,
@@ -53,28 +72,32 @@ class App extends Component {
             groundWidth: mapSizeWidth,
             groundHeight: mapSizeHeight
         });
+
+        this.generatePlayerInit(treeWithRoomAndHall);
+        this.props.setGround(ground);
+        this.props.setMapWithRoomAndhall(treeWithRoomAndHall);
+
     }
 
 
     render() {
 
         //console.log("map BSPTree", map);
-        return (<div className="App">
-            <Toolsbar />
-            <Game
-                ground={
-                    this.state.ground
-                }
-                mapWithRoomAndHall={
-                    this.state.mapWithRoomAndHall
-                }
-            >
-            </Game>
-        </div>
+
+        return (
+            <div className="App">
+                <Toolsbar />
+                <Game />
+            </div>
         );
     }
-   
+
 }
 
 
-export default App;
+export default connect(null,
+    {
+        setGround,
+        setMapWithRoomAndhall,
+        setPlayer
+    })(App);

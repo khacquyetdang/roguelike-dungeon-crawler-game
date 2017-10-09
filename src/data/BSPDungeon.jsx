@@ -91,7 +91,7 @@ export default function generateDungeonTreeForMap(x, y, dungeonWidth, dungeonHei
  * @description create hall for all room in the tree. A hall (or corridor) is 
  * to connect two room toghether
  */
-export  function createWallFromBSPTree(tree, minWidth, minHeight)
+export  function createRoomFromBSPTree(tree, minWidth, minHeight)
 {
     if (tree === null)
     {
@@ -111,7 +111,7 @@ export  function createWallFromBSPTree(tree, minWidth, minHeight)
 
         }
         else {
-            return new BSPTree(tree.x, tree.y, tree.width, tree.height, createWallFromBSPTree(tree.childLeft, minWidth, minHeight), createWallFromBSPTree(tree.childRight, minWidth, minHeight))
+            return new BSPTree(tree.x, tree.y, tree.width, tree.height, createRoomFromBSPTree(tree.childLeft, minWidth, minHeight), createRoomFromBSPTree(tree.childRight, minWidth, minHeight))
         }
 
     }

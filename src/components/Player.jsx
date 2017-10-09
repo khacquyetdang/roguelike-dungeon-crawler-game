@@ -1,5 +1,6 @@
-import Cell from './data/Cell';
-const PlayerEnum = {
+import Cell from '../data/Cell';
+import React from 'react';
+export const PlayerEnum = {
     WARRIOR: 1,
     GLADIATOR: 2,
     BERSERKER: 3,
@@ -18,27 +19,49 @@ class Player extends Cell {
     }
 
     render() {
-        return (<div
-            className="GameCell Hall">
-        </div>)
+        switch (this.type) {
+            case PlayerEnum.WARRIOR: {
+                return (<div
+                    className="GameCell Player_Warrior">
+                </div>);
+            }
+            case PlayerEnum.GLADIATOR: {
+                return (<div
+                    className="GameCell Player_Gladiator">
+                </div>);
+            }
+            case PlayerEnum.BERSERKER: {
+                return (<div
+                    className="GameCell Player_Berserker">
+                </div>);
+            }
+            case PlayerEnum.MAGE: {
+                return (<div
+                    className="GameCell Player_Mage">
+                </div>);
+            }
+
+        }
     }
 
-    moveLeft() {
+    moveLeft = () => {
         if (this.col >= 0) {
             this.col = this.col - 1;
         }
     }
 
-    moveRight() {
+    moveRight = () => {
         this.col = this.col + 1;
     }
 
-    moveTop() {
+    moveTop = () => {
         if (this.row >= 0) {
             this.row = this.row - 1;
         }
     }
-    moveBottom() {
+    moveBottom = () => {
         this.row = this.row + 1;
     }
 }
+
+export default Player;

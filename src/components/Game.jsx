@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import '../generated/components/styles/Games.css';
 import _ from 'lodash';
 import WallCell from '../data/WallCell';
 import HallCell from '../data/HallCell';
 import RoomCell from '../data/RoomCell';
+import { setPlayer } from '../actions';
 
 class Game extends Component {
     constructor() {
@@ -16,34 +18,37 @@ class Game extends Component {
     onKeyPress = (event) => {
         event.preventDefault();
         console.log("onKeyPress ", event.key);
+        var player = this.props.games.player;
         switch (event.key) {
             case "ArrowDown":
-                var y = Math.min(this.state.y + 1, this.props.ground.length);
-                this.setState({ y: y });
+                player.moveBottom();
                 break;
             case "ArrowUp":
-                var y = Math.max(this.state.y - 1, 0);
-                this.setState({ y: y });
+                player.moveTop();
                 break;
             case "ArrowLeft":
-                var x = Math.max(this.state.x - 1, 0);
-                this.setState({ x: x });
+                player.moveLeft();
                 break;
             case "ArrowRight":
-                var x = this.state.x + 1;
-                this.setState({ x: x });
+                player.moveRight();
                 break;
         }
+        this.props.setPlayer(player);
         if (event.key == 'Enter') {
             this.setState({ value: event.target.value })
         }
     }
+    
     render() {
 
-        var game2DArr = this.props.ground;
+        var game2DArr = this.props.games.ground;
         if (game2DArr === null) {
             return <div></div>;
         }
+
+        console.log("player ", this.props.games.player);
+        game2DArr[this.props.games.player.row][this.props.games.player.col] = this.props.games.player;
+
 
         game2DArr = _.slice(game2DArr, this.state.y, this.state.y + 25);
         game2DArr = game2DArr.map(row => {
@@ -69,4 +74,8 @@ class Game extends Component {
     }
 }
 
-export default Game;
+function mapStateToProps(state) {
+    return { games: state };
+}
+
+export default connect(mapStateToProps, { setPlayer })(Game);

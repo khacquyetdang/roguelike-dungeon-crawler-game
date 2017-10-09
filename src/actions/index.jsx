@@ -4,7 +4,7 @@ import { SET_MAPWITHROOMANDHALL, SET_GROUND, SET_PLAYER } from '../constant';
  * 
  * @param {*} mapWithRoomAndHall 
  */
-export function setMapwithroomandhall(mapWithRoomAndHall) {
+export function setMapWithRoomAndhall(mapWithRoomAndHall) {
     return {
         type : SET_MAPWITHROOMANDHALL,
         mapWithRoomAndHall
@@ -28,7 +28,7 @@ export function setGround(ground) {
  */
 export function setPlayer(player) {
     return {
-        type : SET_GROUND,
+        type : SET_PLAYER,
         player
     }
 }
