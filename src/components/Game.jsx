@@ -8,7 +8,7 @@ import RoomCell from '../data/RoomCell';
 import { setPlayer } from '../actions';
 import { debug } from '../config';
 
-const showZoneWidth = 20;
+const showZoneWidth = 30;
 const showZoneHeight = 20;
 class Game extends Component {
     

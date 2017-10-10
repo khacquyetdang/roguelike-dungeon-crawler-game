@@ -35,6 +35,7 @@ import Player, {
 
 import Food, { FoodEnum } from './Food';
 import Monster, { MonsterEnum } from './Monster';
+import Bosses, { BossesType } from './Bosses';
 
 class App extends Component {
 
@@ -99,7 +100,7 @@ class App extends Component {
             }
 
             var monsterMaxItemForRoom = getRandomInt(0, 2);
-            
+
             for (var indexMonster = 0; indexMonster < monsterMaxItemForRoom; indexMonster++) {
                 var monsterY = getRandomInt(room.y, room.y + room.height - 1);
                 var monsterX = getRandomInt(room.x, room.x + room.width - 1);
@@ -115,6 +116,18 @@ class App extends Component {
             }
 
         }
+
+        var bossesRoom = this.treeWithRoomAndHall.getLeafs()[this.treeWithRoomAndHall.getLeafs().length - 1];
+        var bossesY = getRandomInt(bossesRoom.y, bossesRoom.y + bossesRoom.height - 1);
+        var bossesX = getRandomInt(bossesRoom.x, bossesRoom.x + bossesRoom.width - 1);
+        while (checkPositionForItem(bossesX, bossesY)) {
+            bossesY = getRandomInt(bossesRoom.y, bossesRoom.y + bossesRoom.height - 1);
+            bossesX = getRandomInt(bossesRoom.x, bossesRoom.x + bossesRoom.width - 1);
+        }
+        var bossesType = BossesType.GOO;
+
+        var bosses = new Bosses(bossesX, bossesY, bossesType);
+        items.push(bosses);
         this.props.setFoods(foodItems);
         this.props.setItems(items);
     }
