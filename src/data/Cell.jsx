@@ -1,8 +1,15 @@
 "use strict";
 class Cell {
+    /**
+     * 
+     * @param {*} row 
+     * @param {*} col
+     * @description in the games we transpose the matrix so row become col and col became row 
+     */
     constructor(row, col) {
-        this.row = row;
-        this.col = col;
+        
+        this.row = col;
+        this.col = row;
     }
     
     

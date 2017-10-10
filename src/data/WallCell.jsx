@@ -22,6 +22,6 @@ class WallCell extends Cell {
     }
 }
 const styles = {
-    backgroundImage: "url(" + "/image/wall_1.png)",
+    backgroundImage: "url(" + process.env.PUBLIC_URL +"/image/wall_1.png)",
 }
 export default WallCell;

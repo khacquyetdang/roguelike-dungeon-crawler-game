@@ -1,5 +1,7 @@
 import Cell from '../data/Cell';
 import React from 'react';
+import { debug } from '../config';
+
 export const PlayerEnum = {
     WARRIOR: 1,
     GLADIATOR: 2,
@@ -7,18 +9,19 @@ export const PlayerEnum = {
     MAGE: 4
 };
 
+
 const styles = {
     warrior: {
-        backgroundImage: "url(" + "/image/player/warrior.png" + ")",
+        backgroundImage: "url(" + process.env.PUBLIC_URL + "/image/player/warrior.png" + ")",
     },
     gladiator: {
-        backgroundImage: "url(" + "/image/player/gladiator.png" + ")",
+        backgroundImage: "url(" + process.env.PUBLIC_URL + "/image/player/gladiator.png" + ")",
     },
     berserker: {
-        backgroundImage: "url(" + "/image/player/berserker.png" + ")",
+        backgroundImage: "url(" + process.env.PUBLIC_URL + "/image/player/berserker.png" + ")",
     },
     mage: {
-        backgroundImage: "url(" + "/image/player/mage.png" + ")",
+        backgroundImage: "url(" + process.env.PUBLIC_URL + "/image/player/mage.png" + ")",
     }
 }
 class Player extends Cell {
@@ -39,6 +42,11 @@ class Player extends Cell {
         }
         return {};
     }
+    debugPlayer() {
+        if (debug) {
+            return (this.row + "," + this.col);
+        }
+    }
     render() {
         switch (this.type) {
             case PlayerEnum.WARRIOR: {
@@ -48,6 +56,10 @@ class Player extends Cell {
                     <div
                         className="Player"
                         style={styles.warrior}>
+
+                        {
+                           this.debugPlayer()
+                        }
                     </div>
                 </div>);
             }

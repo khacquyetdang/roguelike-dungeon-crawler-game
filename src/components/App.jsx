@@ -42,10 +42,10 @@ class App extends Component {
 
     generatePlayerInit = (treeWithRoomAndHall) => {
         var room1 = treeWithRoomAndHall.getLeafs()[0];
-        var row = getRandomInt(room1.y, room1.y + room1.height);
-        var col = getRandomInt(room1.x, room1.x + room1.width);
+        var y = getRandomInt(room1.y, room1.y + room1.height);
+        var x = getRandomInt(room1.x, room1.x + room1.width);
 
-        var player = new Player(row, col, PlayerEnum.WARRIOR, 100);
+        var player = new Player(x, y, PlayerEnum.WARRIOR, 100);
         this.props.setPlayer(player);
     }
 

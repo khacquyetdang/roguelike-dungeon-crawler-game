@@ -32,18 +32,18 @@ class RoomCell extends Cell {
 
 const styles = {
     Room_1: {
-        backgroundImage: "url(" + "/image/room_1.png)",
+        backgroundImage: "url(" + process.env.PUBLIC_URL + "/image/room_1.png)",
     },
     Room_2: {
-        backgroundImage: "url(" + "/image/room_2.png)",
+        backgroundImage: "url(" + process.env.PUBLIC_URL + "/image/room_2.png)",
     },
 
     Room_3: {
-        backgroundImage: "url(" + "/image/room_3.png)",
+        backgroundImage: "url(" + process.env.PUBLIC_URL + "/image/room_3.png)",
     },
 
     Room_4: {
-        backgroundImage: "url(" + "/image/room_4.png)",
+        backgroundImage: "url(" + process.env.PUBLIC_URL + "/image/room_4.png)",
     }
 }
 export default RoomCell;

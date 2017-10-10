@@ -16,4 +16,5 @@
   max-height: 34px;
   min-height: 34px;
   display: flex;
-  align-items: center; }
+  align-items: center;
+  border: solid 1px "#A8A7A7"; }

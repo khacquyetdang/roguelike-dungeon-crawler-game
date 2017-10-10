@@ -28,6 +28,6 @@ class HallCell extends Cell {
 }
 
 const styles = {
-        backgroundImage: "url(" +"/image/hall.png" +")",    
+        backgroundImage: "url(" + process.env.PUBLIC_URL +"/image/hall.png" +")",    
 }
 export default HallCell;
