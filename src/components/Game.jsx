@@ -11,6 +11,7 @@ import { debug } from '../config';
 const showZoneWidth = 20;
 const showZoneHeight = 20;
 class Game extends Component {
+    
     constructor() {
         super();
         this.state = {
@@ -18,28 +19,51 @@ class Game extends Component {
             y: 0
         }
     }
+    componentWillMount(){
+        document.addEventListener("keydown", this.onKeyPress.bind(this));
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("keydown", this.onKeyPress.bind(this));
+    }
+
+
+
     onKeyPress = (event) => {
         event.preventDefault();
         console.log("onKeyPress ", event.key);
-        var player = this.props.games.player;
+        var { player, ground } = this.props.games;
         switch (event.key) {
             case "ArrowDown":
                 if (player.row < this.props.games.ground.length) {
+                    if (ground[player.row + 1][player.col] instanceof WallCell) {
+                        return;
+                    }
                     player.moveBottom();
                 }
                 break;
             case "ArrowUp":
                 if (player.row > 0) {
+                    if (ground[player.row - 1][player.col] instanceof WallCell) {
+                        return;
+                    }
                     player.moveTop();
                 }
                 break;
             case "ArrowLeft":
                 if (player.col > 0) {
+                    if (ground[player.row][player.col - 1] instanceof WallCell) {
+                        return;
+                    }
                     player.moveLeft();
                 }
                 break;
             case "ArrowRight":
                 if (player.col < this.props.games.ground[0].length) {
+                    if (ground[player.row][player.col + 1] instanceof WallCell) {
+                        return;
+                    }
+
                     player.moveRight();
                 }
                 break;
@@ -91,6 +115,14 @@ class Game extends Component {
 
         var game2DArr = _.map(game2DArr, _.clone);
         player.parent = game2DArr[player.row][player.col];
+        game2DArr[player.row][player.col] = player;
+        
+        this.props.games.items.map(item => {
+            item.parent = game2DArr[item.row][item.col]; 
+            game2DArr[item.row][item.col] = item;
+            
+        });
+       
         var coordZoneToShow = this.centerMapToPlayer(player);
         game2DArr = _.slice(game2DArr, coordZoneToShow.startRow, coordZoneToShow.startRow + showZoneHeight);
         game2DArr = game2DArr.map(col => {
@@ -100,24 +132,19 @@ class Game extends Component {
         var gameMapDiv = game2DArr.map((row, indexRow) => {
             var divRow = row.map(
                 (cell, index) => {
-                    if (player.row === (cell.row)
-                        && player.col === (cell.col)) {
-                        //<div key={index}>{player.render()}</div>;
-                        return <div key={index}>{player.render()}</div>;
-                    } else {
                         if (debug) {
                             return <div key={index}>{cell.render()} {cell.row + "," + cell.col}</div>;
                         } else {
-                            return <div key={index}>{cell.render()}</div>;                            
+                            return <div key={index}>{cell.render()}</div>;
                         }
                         //return <div className="GameCell" style={{backgroundColor: 'red'}}key={index}></div>
-                    }
+                    
                 }
             );
             return <div key={indexRow} className="GameRow">{divRow}</div>
         });
         return (
-            <div tabIndex="0" onKeyDown={this.onKeyPress}>
+            <div onKeyDown={this.onKeyPress}>
                 <div
                     className="gameMap" >
                     {gameMapDiv}

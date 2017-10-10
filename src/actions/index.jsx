@@ -1,4 +1,4 @@
-import { SET_MAPWITHROOMANDHALL, SET_GROUND, SET_PLAYER } from '../constant';
+import { SET_MAPWITHROOMANDHALL, SET_GROUND, SET_PLAYER, SET_FOODS, SET_ITEMS } from '../constant';
 
 /**
  * 
@@ -30,5 +30,28 @@ export function setPlayer(player) {
     return {
         type : SET_PLAYER,
         player
+    }
+}
+
+/**
+ * 
+ * @param {*} foodItems array of Food 
+ */
+export function setFoods(foodItems) {
+    return {
+        type : SET_FOODS,
+        foodItems
+    }
+}
+
+
+/**
+ * 
+ * @param {*} items array of Food, Ennemy, Weapon 
+ */
+export function setItems(items) {
+    return {
+        type : SET_ITEMS,
+        items
     }
 }

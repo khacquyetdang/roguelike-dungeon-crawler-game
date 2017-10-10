@@ -8,7 +8,8 @@
   flex-direction: row; }
 
 .GameCell,
-.Player {
+.Player,
+.Food {
   width: 34px;
   height: 34px;
   max-width: 34px;
@@ -17,4 +18,15 @@
   min-height: 34px;
   display: flex;
   align-items: center;
-  border: solid 1px "#A8A7A7"; }
+  border: solid 1px #A8A7A7; }
+
+.imgFood,
+.imgMonster {
+  width: 32px;
+  height: 32px;
+  max-width: 32px;
+  min-width: 32px;
+  max-height: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center; }

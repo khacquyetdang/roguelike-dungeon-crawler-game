@@ -10,8 +10,10 @@
 }
 
 $cell_size: 34px;
+$img_food_size: 32px;
 .GameCell,
-.Player {
+.Player,
+.Food {
     width: $cell_size;
     height: $cell_size;
     max-width: $cell_size;
@@ -20,5 +22,17 @@ $cell_size: 34px;
     min-height: $cell_size;
     display: flex;
     align-items: center;
-    border: solid 1px "#A8A7A7";
+    border: solid 1px #A8A7A7;
+}
+
+.imgFood,
+.imgMonster {
+    width: $img_food_size;
+    height: $img_food_size;
+    max-width: $img_food_size;
+    min-width: $img_food_size;
+    max-height: $img_food_size;
+    min-height: $img_food_size;
+    display: flex;
+    align-items: center;
 }
