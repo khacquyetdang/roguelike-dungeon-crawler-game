@@ -28,6 +28,25 @@ class Food extends Cell {
     constructor(row, col, type = FoodEnum.BREAD) {
         super(row, col);
         this.type = type;
+        this.isAvailable = true;
+        switch (this.type) {
+            case FoodEnum.BREAD: {
+                this.health = 5;
+                break;
+            }
+            case FoodEnum.CHEESE: {
+                this.health = 10;
+                break;
+            }
+            case FoodEnum.MEAT: {
+                this.health = 20;
+                break;
+            }
+            default: {
+                this.health = 5;
+                break;
+            }
+        }
     }
 
     getStyles = () => {

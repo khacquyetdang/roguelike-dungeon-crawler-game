@@ -5,13 +5,14 @@ import _ from 'lodash';
 import WallCell from '../data/WallCell';
 import HallCell from '../data/HallCell';
 import RoomCell from '../data/RoomCell';
-import { setPlayer } from '../actions';
+import { setPlayer, addHealth } from '../actions';
 import { debug } from '../config';
-
+import Food from './Food';
+import Monster from './Monster';
 const showZoneWidth = 30;
 const showZoneHeight = 20;
 class Game extends Component {
-    
+
     constructor() {
         super();
         this.state = {
@@ -19,7 +20,7 @@ class Game extends Component {
             y: 0
         }
     }
-    componentWillMount(){
+    componentWillMount() {
         document.addEventListener("keydown", this.onKeyPress.bind(this));
     }
 
@@ -27,6 +28,41 @@ class Game extends Component {
         document.removeEventListener("keydown", this.onKeyPress.bind(this));
     }
 
+    hitWall = () => {
+
+    }
+
+    eatFood = (row, col) => {
+        var { player, ground } = this.props.games;
+        var foodItem = ground[row][col].child;
+        if (foodItem !== undefined && foodItem !== null
+            && foodItem instanceof Food && foodItem.isAvailable) {
+            foodItem.isAvailable = false;
+            this.props.addHealth(foodItem.health);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @augments row , col
+     * @returns true if monster is dead or the current cell is not a monster 
+     */
+    attackMonster = (row, col) => {
+        var { player, ground } = this.props.games;
+        var monsterItem = ground[row][col].child;
+        if (monsterItem !== undefined && monsterItem !== null
+            && monsterItem instanceof Monster && monsterItem.strength > 0) {
+            monsterItem.strength = monsterItem.strength - this.props.games.attack;
+            this.props.addHealth(monsterItem.health);
+            if (monsterItem.strength > 0) {
+                return false;
+            } else {
+                // @TODO add experience
+            }
+        }
+        return true;
+    }
 
 
     onKeyPress = (event) => {
@@ -39,7 +75,10 @@ class Game extends Component {
                     if (ground[player.row + 1][player.col] instanceof WallCell) {
                         return;
                     }
-                    player.moveBottom();
+                    this.eatFood(player.row + 1, player.col);
+                    if (this.attackMonster(player.row + 1, player.col)) {
+                        player.moveBottom();
+                    }
                 }
                 break;
             case "ArrowUp":
@@ -47,7 +86,10 @@ class Game extends Component {
                     if (ground[player.row - 1][player.col] instanceof WallCell) {
                         return;
                     }
-                    player.moveTop();
+                    this.eatFood(player.row - 1, player.col);
+                    if (this.attackMonster(player.row - 1, player.col)) {
+                        player.moveTop();
+                    }
                 }
                 break;
             case "ArrowLeft":
@@ -55,7 +97,10 @@ class Game extends Component {
                     if (ground[player.row][player.col - 1] instanceof WallCell) {
                         return;
                     }
-                    player.moveLeft();
+                    this.eatFood(player.row, player.col - 1);
+                    if (this.attackMonster(player.row, player.col - 1)) {
+                        player.moveLeft();
+                    }
                 }
                 break;
             case "ArrowRight":
@@ -63,8 +108,10 @@ class Game extends Component {
                     if (ground[player.row][player.col + 1] instanceof WallCell) {
                         return;
                     }
-
-                    player.moveRight();
+                    this.eatFood(player.row, player.col + 1);
+                    if (this.attackMonster(player.row, player.col + 1)) {
+                        player.moveRight();
+                    }
                 }
                 break;
         }
@@ -116,13 +163,24 @@ class Game extends Component {
         var game2DArr = _.map(game2DArr, _.clone);
         player.parent = game2DArr[player.row][player.col];
         game2DArr[player.row][player.col] = player;
-        
+
         this.props.games.items.map(item => {
-            item.parent = game2DArr[item.row][item.col]; 
+            if (item instanceof Food) {
+                if (item.isAvailable == false) {
+                    return item;
+                }
+            }
+            if (item instanceof Monster)
+            {
+                if (item.strength <= 0) {
+                    return item;
+                }
+            }
+            item.parent = game2DArr[item.row][item.col];
             game2DArr[item.row][item.col] = item;
-            
+            return item;
         });
-       
+
         var coordZoneToShow = this.centerMapToPlayer(player);
         game2DArr = _.slice(game2DArr, coordZoneToShow.startRow, coordZoneToShow.startRow + showZoneHeight);
         game2DArr = game2DArr.map(col => {
@@ -132,13 +190,13 @@ class Game extends Component {
         var gameMapDiv = game2DArr.map((row, indexRow) => {
             var divRow = row.map(
                 (cell, index) => {
-                        if (debug) {
-                            return <div key={index}>{cell.render()} {cell.row + "," + cell.col}</div>;
-                        } else {
-                            return <div key={index}>{cell.render()}</div>;
-                        }
-                        //return <div className="GameCell" style={{backgroundColor: 'red'}}key={index}></div>
-                    
+                    if (debug) {
+                        return <div key={index}>{cell.render()} {cell.row + "," + cell.col}</div>;
+                    } else {
+                        return <div key={index}>{cell.render()}</div>;
+                    }
+                    //return <div className="GameCell" style={{backgroundColor: 'red'}}key={index}></div>
+
                 }
             );
             return <div key={indexRow} className="GameRow">{divRow}</div>
@@ -158,4 +216,4 @@ function mapStateToProps(state) {
     return { games: state };
 }
 
-export default connect(mapStateToProps, { setPlayer })(Game);
+export default connect(mapStateToProps, { setPlayer, addHealth })(Game);

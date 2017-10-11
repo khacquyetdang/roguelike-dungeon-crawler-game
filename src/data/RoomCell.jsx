@@ -11,6 +11,7 @@ class RoomCell extends Cell {
     constructor(row, col, roomIndex) {
         super(row, col);
         this.roomIndex = roomIndex;
+        this.child = null;
     }
 
     getStyle = () => {

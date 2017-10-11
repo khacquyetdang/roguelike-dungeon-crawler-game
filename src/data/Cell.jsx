@@ -10,6 +10,7 @@ class Cell {
         
         this.row = col;
         this.col = row;
+        this.child = null;
     }
     
     

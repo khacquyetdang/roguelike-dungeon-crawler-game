@@ -95,6 +95,7 @@ class App extends Component {
                 var foodType = getRandomInt(FoodEnum.BREAD, FoodEnum.MEAT);
 
                 var food = new Food(foodX, foodY, foodType);
+                this.ground[food.row][food.col].child = food;
                 foodItems.push(food);
                 items.push(food);
             }
@@ -113,6 +114,7 @@ class App extends Component {
                 var monster = new Monster(monsterX, monsterY, monsterType);
                 monsterItems.push(monster);
                 items.push(monster);
+                this.ground[monster.row][monster.col].child = monster;
             }
 
         }
@@ -127,6 +129,8 @@ class App extends Component {
         var bossesType = BossesType.GOO;
 
         var bosses = new Bosses(bossesX, bossesY, bossesType);
+        this.ground[bosses.row][bosses.col].child = bosses;
+        
         items.push(bosses);
         this.props.setFoods(foodItems);
         this.props.setItems(items);
@@ -147,7 +151,7 @@ class App extends Component {
         var treeWithRoomAndHall = createHallFromBSPTree(treeRoom, 10);
 
         var ground = generateGroundFromTree(treeWithRoomAndHall);
-
+        this.ground = ground;
 
         this.setState({
             mapWithRoomAndHall: treeWithRoomAndHall,
@@ -159,7 +163,7 @@ class App extends Component {
         this.treeWithRoomAndHall = treeWithRoomAndHall;
         this.generatePlayerInit();
         this.generateGameItems();
-        this.props.setGround(ground);
+        this.props.setGround(this.ground);
         this.props.setMapWithRoomAndhall(treeWithRoomAndHall);
 
     }

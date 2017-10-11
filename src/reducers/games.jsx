@@ -1,4 +1,6 @@
-import { SET_MAPWITHROOMANDHALL, SET_GROUND, SET_PLAYER, SET_FOODS, SET_ITEMS } from '../constant';
+import { SET_MAPWITHROOMANDHALL, SET_GROUND, SET_PLAYER, 
+    SET_FOODS, SET_ITEMS,
+    ADD_HEALTH } from '../constant';
 
 export const initialState = {
     ground: null,
@@ -7,7 +9,7 @@ export const initialState = {
     foods: [],
     items: [],
     health: 100,
-    weapon: null,
+    weapons: [],
     attack: 7,
     level: 0,
     nextLevel: 100,
@@ -39,6 +41,12 @@ export default function game(state = initialState, action) {
             return Object.assign({}, state, {
                 items: action.items
             });            
+        }
+        case ADD_HEALTH: {
+            var health = state.health + action.health;
+            return Object.assign({}, state, {
+                health: health
+            });     
         }
 
         default: {

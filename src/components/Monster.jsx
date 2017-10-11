@@ -1,6 +1,6 @@
 import Cell from '../data/Cell';
 import React from 'react';
-
+import { baseUrl } from '../config';
 export const MonsterEnum = {
     RAT : 1,
     CRAB : 2
@@ -15,6 +15,26 @@ class Monster extends Cell {
     constructor(row, col, type = MonsterEnum.RAT) {
         super(row, col);
         this.type = type;
+     
+        switch (this.type) {
+            case MonsterEnum.RAT: {
+                this.strength = 8;
+                this.damaged = -8;
+                this.experience = 1;
+                break;
+            }
+            case MonsterEnum.CRAB: {
+                this.strength = 16;                
+                this.damaged = -16;
+                this.experience = 3;
+                break;
+            }
+            default: {
+                this.strength = 8;
+                this.experience = 1;
+                break;
+            }
+        }
     }
 
     getParentStyles = () => {
@@ -28,13 +48,13 @@ class Monster extends Cell {
     getImageSrc = () => {
         switch (this.type) {
             case MonsterEnum.RAT: {
-                return process.env.PUBLIC_URL + "/image/monster/albino_rat_gif.gif";
+                return baseUrl + "/image/monster/albino_rat_gif.gif";
             }
             case MonsterEnum.CRAB: {
-                return process.env.PUBLIC_URL + "/image/monster/sewer_crab_gif.gif";
+                return baseUrl + "/image/monster/sewer_crab_gif.gif";
             }
             default: {
-                return process.env.PUBLIC_URL + "/image/monster/albino_rat_gif.gif";              
+                return baseUrl + "/image/monster/albino_rat_gif.gif";              
             }
         }
     }

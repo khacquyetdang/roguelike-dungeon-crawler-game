@@ -1,4 +1,5 @@
-import { SET_MAPWITHROOMANDHALL, SET_GROUND, SET_PLAYER, SET_FOODS, SET_ITEMS } from '../constant';
+import { SET_MAPWITHROOMANDHALL, SET_GROUND, SET_PLAYER, SET_FOODS, 
+    SET_ITEMS, ADD_HEALTH } from '../constant';
 
 /**
  * 
@@ -53,5 +54,16 @@ export function setItems(items) {
     return {
         type : SET_ITEMS,
         items
+    }
+}
+
+/**
+ * 
+ * @param {*} health 
+ */
+export function addHealth(health) {
+    return {
+        type: ADD_HEALTH,
+        health
     }
 }
