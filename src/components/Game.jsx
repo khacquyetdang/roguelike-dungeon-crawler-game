@@ -5,10 +5,11 @@ import _ from 'lodash';
 import WallCell from '../data/WallCell';
 import HallCell from '../data/HallCell';
 import RoomCell from '../data/RoomCell';
-import { setPlayer, addHealth } from '../actions';
+import { setPlayer, addHealth, addExperience } from '../actions';
 import { debug } from '../config';
 import Food from './Food';
 import Monster from './Monster';
+import Bosses from './Bosses';
 const showZoneWidth = 30;
 const showZoneHeight = 20;
 class Game extends Component {
@@ -54,11 +55,34 @@ class Game extends Component {
         if (monsterItem !== undefined && monsterItem !== null
             && monsterItem instanceof Monster && monsterItem.strength > 0) {
             monsterItem.strength = monsterItem.strength - this.props.games.attack;
-            this.props.addHealth(monsterItem.health);
+            this.props.addHealth(monsterItem.damaged);
             if (monsterItem.strength > 0) {
                 return false;
             } else {
                 // @TODO add experience
+                this.props.addExperience(monsterItem.experience);               
+            }
+        }
+        return true;
+    }
+
+        /**
+     * @augments row , col
+     * @returns true if monster is dead or the current cell is not a monster 
+     */
+    attackBosses = (row, col) => {
+        var { player, ground } = this.props.games;
+        var bossItem = ground[row][col].child;
+        if (bossItem !== undefined && bossItem !== null
+            && bossItem instanceof Bosses && bossItem.strength > 0) {
+                bossItem.strength = bossItem.strength - this.props.games.attack;
+            this.props.addHealth(bossItem.damaged);
+            if (bossItem.strength > 0) {
+                return false;
+            } else {
+                this.props.addExperience(bossItem.experience);
+                //@TODO pass to next level
+                // regenerate map for this level
             }
         }
         return true;
@@ -216,4 +240,4 @@ function mapStateToProps(state) {
     return { games: state };
 }
 
-export default connect(mapStateToProps, { setPlayer, addHealth })(Game);
+export default connect(mapStateToProps, { setPlayer, addHealth, addExperience })(Game);

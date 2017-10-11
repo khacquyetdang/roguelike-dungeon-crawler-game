@@ -2,12 +2,12 @@ import Cell from '../data/Cell';
 import React from 'react';
 
 export const BossesType = {
-    GOO : 1,
-    TENGU : 2,
-    DM300 : 3,
-    DWARF_KING : 4,
-    YOG_DZEWA : 5,
-    
+    GOO: 1,
+    TENGU: 2,
+    DM300: 3,
+    DWARF_KING: 4,
+    YOG_DZEWA: 5,
+
 };
 class Bosses extends Cell {
     /**
@@ -16,9 +16,47 @@ class Bosses extends Cell {
      * @param {*} y 
      * @param {*} type must be Monster enum
      */
-    constructor(row, col, type = BossesType.GOO) {
+    constructor(row, col, health, type = BossesType.GOO) {
         super(row, col);
         this.type = type;
+        switch (this.type) {
+            case BossesType.DM300: {
+                this.health = 30;
+                this.damaged = -6;
+                this.experience = 10;
+                break;
+            }
+            case BossesType.GOO: {
+                this.health = 35;
+                this.damaged = -7;
+                this.experience = 12;
+                break;
+            }
+            case BossesType.TENGU: {
+                this.health = 40;
+                this.damaged = -8;
+                this.experience = 15;
+                break;
+            }
+            case BossesType.YOG_DZEWA: {
+                this.health = 45;
+                this.damaged = -10;
+                this.experience = 30;
+                break;
+            }
+            case BossesType.DWARF_KING: {
+                this.health = 45;
+                this.damaged = -15;
+                this.experience = 40;
+                break;    
+            }
+            default: {
+                this.health = 30;
+                this.damaged = -6;
+                this.experience = 10;
+                break;
+            }
+        }
     }
 
     getParentStyles = () => {

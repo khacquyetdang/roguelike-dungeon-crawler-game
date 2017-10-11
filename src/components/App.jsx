@@ -100,7 +100,7 @@ class App extends Component {
                 items.push(food);
             }
 
-            var monsterMaxItemForRoom = getRandomInt(0, 2);
+            var monsterMaxItemForRoom = getRandomInt(0, 1);
 
             for (var indexMonster = 0; indexMonster < monsterMaxItemForRoom; indexMonster++) {
                 var monsterY = getRandomInt(room.y, room.y + room.height - 1);

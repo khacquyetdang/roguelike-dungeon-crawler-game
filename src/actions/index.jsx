@@ -1,5 +1,5 @@
 import { SET_MAPWITHROOMANDHALL, SET_GROUND, SET_PLAYER, SET_FOODS, 
-    SET_ITEMS, ADD_HEALTH } from '../constant';
+    SET_ITEMS, ADD_HEALTH, ADD_EXPERIENCE } from '../constant';
 
 /**
  * 
@@ -65,5 +65,16 @@ export function addHealth(health) {
     return {
         type: ADD_HEALTH,
         health
+    }
+}
+
+/**
+ * 
+ * @param {*} experience 
+ */
+export function addExperience(experience) {
+    return {
+        type: ADD_EXPERIENCE,
+        experience
     }
 }

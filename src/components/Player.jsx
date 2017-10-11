@@ -31,9 +31,11 @@ class Player extends Cell {
      * @param {PlayerEnum} type 
      * @param {number} health 
      */
-    constructor(row, col, type, health) {
+    constructor(row, col, type, health, experience) {
         super(row, col);
         this.type = type;
+        this.health = health;
+        this.experience = experience;
     }
 
     getParentStyles = () => {
@@ -47,6 +49,24 @@ class Player extends Cell {
             return (this.row + "," + this.col);
         }
     }
+
+    getName = () => {
+        switch (this.type) {
+            case PlayerEnum.WARRIOR: {
+                return "WARRIOR";
+            }
+            case PlayerEnum.GLADIATOR: {
+                return "GLADIATOR";
+            }
+            case PlayerEnum.BERSERKER: {
+                return "BERSERKER";
+            }
+            case PlayerEnum.MAGE: {
+                return "MAGE";
+            }
+        }
+        return "WARRIOR";
+    }
     render() {
         switch (this.type) {
             case PlayerEnum.WARRIOR: {
@@ -58,7 +78,7 @@ class Player extends Cell {
                         style={styles.warrior}>
 
                         {
-                           this.debugPlayer()
+                            this.debugPlayer()
                         }
                     </div>
                 </div>);

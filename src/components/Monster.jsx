@@ -20,18 +20,18 @@ class Monster extends Cell {
             case MonsterEnum.RAT: {
                 this.strength = 8;
                 this.damaged = -8;
-                this.experience = 1;
+                this.experience = 5;
                 break;
             }
             case MonsterEnum.CRAB: {
                 this.strength = 16;                
-                this.damaged = -16;
-                this.experience = 3;
+                this.damaged = -10;
+                this.experience = 10;
                 break;
             }
             default: {
                 this.strength = 8;
-                this.experience = 1;
+                this.experience = 5;
                 break;
             }
         }
