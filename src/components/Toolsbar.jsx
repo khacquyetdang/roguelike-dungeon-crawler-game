@@ -21,7 +21,7 @@ class Toolsbar extends Component {
             <div className="Attack"> Attack : 7 &nbsp;</div>
             <div className="Hero">  You are: {this.getPlayerName() }&nbsp;</div>
             <div className="Experience"> Experience : { this.props.games.experience } &nbsp;</div>
-            <div className="Dungeon"> Dungeon : 1 &nbsp;</div>
+            <div className="Dungeon"> Dungeon : { this.props.games.level } &nbsp;</div>
         </div>)
     }
 }

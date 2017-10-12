@@ -5,7 +5,7 @@ import _ from 'lodash';
 import WallCell from '../data/WallCell';
 import HallCell from '../data/HallCell';
 import RoomCell from '../data/RoomCell';
-import { setPlayer, addHealth, addExperience } from '../actions';
+import { setPlayer, addHealth, addExperience, generateNextLevel } from '../actions';
 import { debug } from '../config';
 import Food from './Food';
 import Monster from './Monster';
@@ -47,7 +47,7 @@ class Game extends Component {
 
     /**
      * @augments row , col
-     * @returns true if monster is dead or the current cell is not a monster 
+     * @returns true if monster (or boss) is dead or the current cell is not a monster 
      */
     attackMonster = (row, col) => {
         var { player, ground } = this.props.games;
@@ -60,7 +60,24 @@ class Game extends Component {
                 return false;
             } else {
                 // @TODO add experience
-                this.props.addExperience(monsterItem.experience);               
+                this.props.addExperience(monsterItem.experience);        
+            }
+        }
+
+        var bossItem = ground[row][col].child;
+        
+        if (bossItem !== undefined && bossItem !== null
+            && bossItem instanceof Bosses && bossItem.strength > 0) {
+                bossItem.strength = bossItem.strength - this.props.games.attack;
+            this.props.addHealth(bossItem.damaged);
+            if (bossItem.strength > 0) {
+                return false;
+            } else {
+                this.props.addExperience(bossItem.experience);
+                this.props.generateNextLevel();       
+                
+                //@TODO pass to next level
+                // regenerate map for this level
             }
         }
         return true;
@@ -81,6 +98,8 @@ class Game extends Component {
                 return false;
             } else {
                 this.props.addExperience(bossItem.experience);
+                this.props.generateNextLevel();       
+                
                 //@TODO pass to next level
                 // regenerate map for this level
             }
@@ -240,4 +259,4 @@ function mapStateToProps(state) {
     return { games: state };
 }
 
-export default connect(mapStateToProps, { setPlayer, addHealth, addExperience })(Game);
+export default connect(mapStateToProps, { setPlayer, addHealth, addExperience, generateNextLevel })(Game);

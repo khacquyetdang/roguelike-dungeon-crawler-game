@@ -67,52 +67,37 @@ class Player extends Cell {
         }
         return "WARRIOR";
     }
-    render() {
+    getStyle = () => {
         switch (this.type) {
             case PlayerEnum.WARRIOR: {
-                return (<div
-                    className="GameCell"
-                    style={this.getParentStyles()}>
-                    <div
-                        className="Player"
-                        style={styles.warrior}>
-
-                        {
-                            this.debugPlayer()
-                        }
-                    </div>
-                </div>);
+                return styles.warrior;
             }
             case PlayerEnum.GLADIATOR: {
-                return (<div
-                    className="GameCell"
-                    style={this.getParentStyles()}>
-                    <div
-                        className="Player"
-                        style={styles.gladiator}>
-                    </div>
-                </div>);
+                return styles.gladiator;
             }
             case PlayerEnum.BERSERKER: {
-                return (<div
-                    className="GameCell"
-                    style={this.getParentStyles()}>
-                    <div
-                        className="Player"
-                        style={styles.berserker} />
-                </div>);
+                return styles.berserker;
             }
             case PlayerEnum.MAGE: {
-                return (<div
-                    className="GameCell"
-                    style={this.getParentStyles()}>
-                    <div
-                        className="Player"
-                        style={styles.mage} />
-                </div>);
+                return styles.MAGE;
             }
-
         }
+        return styles.warrior;
+    }
+    
+    render() {
+        return (<div
+            className="GameCell"
+            style={this.getParentStyles()}>
+            <div
+                className="Player"
+                style={this.getStyle()}>
+
+                {
+                    this.debugPlayer()
+                }
+            </div>
+        </div>);
     }
 
     moveLeft = () => {

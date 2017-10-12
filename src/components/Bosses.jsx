@@ -21,37 +21,37 @@ class Bosses extends Cell {
         this.type = type;
         switch (this.type) {
             case BossesType.DM300: {
-                this.health = 30;
+                this.strength = 30;
                 this.damaged = -6;
                 this.experience = 10;
                 break;
             }
             case BossesType.GOO: {
-                this.health = 35;
+                this.strength = 35;
                 this.damaged = -7;
                 this.experience = 15;
                 break;
             }
             case BossesType.TENGU: {
-                this.health = 40;
+                this.strength = 40;
                 this.damaged = -8;
                 this.experience = 25;
                 break;
             }
             case BossesType.YOG_DZEWA: {
-                this.health = 45;
+                this.strength = 45;
                 this.damaged = -10;
                 this.experience = 30;
                 break;
             }
             case BossesType.DWARF_KING: {
-                this.health = 45;
+                this.strength = 45;
                 this.damaged = -15;
                 this.experience = 40;
                 break;    
             }
             default: {
-                this.health = 30;
+                this.strength = 30;
                 this.damaged = -6;
                 this.experience = 10;
                 break;

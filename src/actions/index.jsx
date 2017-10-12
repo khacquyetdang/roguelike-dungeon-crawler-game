@@ -61,3 +61,10 @@ export const addHealth = makeActionCreator(ADD_HEALTH, 'health');
  * @param {*} experience 
  */
 export const addExperience = makeActionCreator(ADD_EXPERIENCE, 'experience');
+
+
+/**
+ * 
+ * @param {*} experience 
+ */
+export const generateNextLevel = makeActionCreator(GENERATE_NEXT_LEVEL);
