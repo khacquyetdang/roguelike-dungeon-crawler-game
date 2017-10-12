@@ -7,7 +7,7 @@ class Toolsbar extends Component {
 
     getPlayerName()
     {
-        if (this.props.games.player !== null)
+        if (this.props.games.player !== undefined && this.props.games.player !== null)
         {
             return this.props.games.player.getName();
         }

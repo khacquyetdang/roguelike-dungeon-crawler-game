@@ -1,80 +1,63 @@
-import { SET_MAPWITHROOMANDHALL, SET_GROUND, SET_PLAYER, SET_FOODS, 
-    SET_ITEMS, ADD_HEALTH, ADD_EXPERIENCE } from '../constant';
+import {
+    SET_MAPWITHROOMANDHALL, SET_GROUND, SET_PLAYER, SET_FOODS,
+    SET_ITEMS, ADD_HEALTH, ADD_EXPERIENCE, GENERATE_NEXT_LEVEL
+} from '../constant';
 
+/**
+ * 
+ * @description this function is to avoid rewrite the action creator each time
+ * @param {*} type 
+ * @param {*} argNames
+ * @returns an action with type and argument 
+ */
+function makeActionCreator(type, ...argNames) {
+    return function (...args) {
+        let action = { type }
+        argNames.forEach((arg, index) => {
+            action[argNames[index]] = args[index]
+        })
+        return action;
+    }
+}
 /**
  * 
  * @param {*} mapWithRoomAndHall 
  */
-export function setMapWithRoomAndhall(mapWithRoomAndHall) {
-    return {
-        type : SET_MAPWITHROOMANDHALL,
-        mapWithRoomAndHall
-    }
-}
+export const setMapWithRoomAndhall = makeActionCreator(SET_MAPWITHROOMANDHALL, 'mapWithRoomAndHall');
 
 /**
  * 
  * @param {*} ground matrix of games with wall, room, and hall 
  */
-export function setGround(ground) {
-    return {
-        type : SET_GROUND,
-        ground
-    }
-}
+export const setGround = makeActionCreator(SET_GROUND, 'ground');
 
 /**
  * 
  * @param {Player} player 
  */
-export function setPlayer(player) {
-    return {
-        type : SET_PLAYER,
-        player
-    }
-}
+export const setPlayer = makeActionCreator(SET_PLAYER, 'player');
 
 /**
  * 
  * @param {*} foodItems array of Food 
  */
-export function setFoods(foodItems) {
-    return {
-        type : SET_FOODS,
-        foodItems
-    }
-}
+export const setFoods = makeActionCreator(SET_FOODS, 'foodItems');
 
 
 /**
  * 
  * @param {*} items array of Food, Ennemy, Weapon 
  */
-export function setItems(items) {
-    return {
-        type : SET_ITEMS,
-        items
-    }
-}
+export const setItems = makeActionCreator(SET_ITEMS, 'items');
 
 /**
  * 
  * @param {*} health 
  */
-export function addHealth(health) {
-    return {
-        type: ADD_HEALTH,
-        health
-    }
-}
+export const addHealth = makeActionCreator(ADD_HEALTH, 'health');
 
 /**
  * 
  * @param {*} experience 
  */
-export function addExperience(experience) {
-    return {
-        type: ADD_EXPERIENCE,
-        experience
-    }
-}
+export const addExperience = makeActionCreator(ADD_EXPERIENCE, 'experience');

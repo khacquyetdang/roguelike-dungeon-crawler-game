@@ -5,6 +5,7 @@ export const SET_FOODS = "SET_FOODS";
 export const SET_ITEMS = "SET_ITEMS";
 export const ADD_HEALTH = "ADD_HEALTH";
 export const ADD_EXPERIENCE = "ADD_EXPERIENCE";
+export const GENERATE_NEXT_LEVEL = "GENERATE_NEXT_LEVEL";
 
 
 

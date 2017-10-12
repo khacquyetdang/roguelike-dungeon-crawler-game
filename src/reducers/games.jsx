@@ -81,10 +81,9 @@ export default function game(state = initialState, action) {
                     break;
                 }
             }
-            if (experience)
-                return Object.assign({}, state, {
-                    experience, player
-                });
+            return Object.assign({}, state, {
+                experience, player
+            });
         }
 
         default: {

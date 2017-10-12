@@ -29,13 +29,13 @@ class Bosses extends Cell {
             case BossesType.GOO: {
                 this.health = 35;
                 this.damaged = -7;
-                this.experience = 12;
+                this.experience = 15;
                 break;
             }
             case BossesType.TENGU: {
                 this.health = 40;
                 this.damaged = -8;
-                this.experience = 15;
+                this.experience = 25;
                 break;
             }
             case BossesType.YOG_DZEWA: {
