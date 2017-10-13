@@ -1,7 +1,7 @@
 import Cell from '../data/Cell';
 import React from 'react';
 import { debug } from '../config';
-
+import { EXP_BERSERKER, EXP_GLADIATOR, EXP_MAGE, EXP_WARRIOR} from '../constant';
 export const PlayerEnum = {
     WARRIOR: 1,
     GLADIATOR: 2,
@@ -45,7 +45,7 @@ class Player extends Cell {
         this.experience = experience;
     }
 
-    getParentStyles () {
+    getParentStyles() {
         if (this.parent !== undefined && this.parent !== null) {
             return this.parent.getStyle();
         }
@@ -57,7 +57,7 @@ class Player extends Cell {
         }
     }
 
-    getName = () => {
+    getName() {
         switch (this.type) {
             case PlayerEnum.WARRIOR: {
                 return "WARRIOR";
@@ -86,7 +86,7 @@ class Player extends Cell {
                 return styles.berserker;
             }
             case PlayerEnum.MAGE: {
-                return styles.MAGE;
+                return styles.mage;
             }
         }
         return styles.warrior;
@@ -102,6 +102,18 @@ class Player extends Cell {
 
     addExperience(experience) {
         this.experience = this.experience + experience;
+        if (this.type === PlayerEnum.WARRIOR && this.experience >= EXP_GLADIATOR) {
+            this.type = PlayerEnum.GLADIATOR;
+            this.experience = 0;
+        } else if (this.type === PlayerEnum.GLADIATOR && this.experience >= EXP_BERSERKER) {
+            this.type = PlayerEnum.BERSERKER;
+            this.experience = 0;
+        } else if (this.type === PlayerEnum.BERSERKER && this.experience >= EXP_MAGE) {
+            this.type = PlayerEnum.MAGE;
+            this.experience = 0;
+        }
+
+
     }
     render() {
         return (<div

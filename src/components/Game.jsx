@@ -28,12 +28,6 @@ class Game extends Component {
 
     }
 
-    componentDidMount() {
-        if (this.props.games.bosses !== null && this.props.games.bosses.strength <= 0)
-        {
-            this.props.generateNextLevel();
-        }
-    }
     onKeyPress = (event) => {
         event.preventDefault();
         console.log("onKeyPress ", event.key);
@@ -44,7 +38,7 @@ class Game extends Component {
                     if (ground[player.row + 1][player.col] instanceof WallCell) {
                         return;
                     }
-                    this.props.movePlayer(PlayerDirectionEnum.BOTTOM);                
+                    this.props.movePlayer(PlayerDirectionEnum.BOTTOM);
                 }
                 break;
             case "ArrowUp":
@@ -100,6 +94,13 @@ class Game extends Component {
             startRow: startZoneRow,
             startCol: startZoneCol
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("componentWillReceiveProps");
+        if (nextProps.games.bosses !== null && nextProps.games.bosses.strength <= 0) {
+            nextProps.generateNextLevel();
+        }
     }
 
     render() {
