@@ -9,6 +9,13 @@ export const PlayerEnum = {
     MAGE: 4
 };
 
+export const PlayerDirectionEnum = {
+    LEFT: 1,
+    TOP: 2,
+    RIGHT: 3,
+    BOTTOM: 4
+};
+
 
 const styles = {
     warrior: {
@@ -31,7 +38,7 @@ class Player extends Cell {
      * @param {PlayerEnum} type 
      * @param {number} health 
      */
-    constructor(row, col, type, health, experience) {
+    constructor(row, col, type, health, experience = 0) {
         super(row, col);
         this.type = type;
         this.health = health;
@@ -84,7 +91,18 @@ class Player extends Cell {
         }
         return styles.warrior;
     }
-    
+
+    /**
+     * 
+     * @param {Number} health 
+     */
+    addHealth(health) {
+        this.health = this.health + health;
+    }
+
+    addExperience(experience) {
+        this.experience = this.experience + experience;
+    }
     render() {
         return (<div
             className="GameCell"
@@ -100,22 +118,22 @@ class Player extends Cell {
         </div>);
     }
 
-    moveLeft = () => {
+    moveLeft() {
         if (this.col >= 0) {
             this.col = this.col - 1;
         }
     }
 
-    moveRight = () => {
+    moveRight() {
         this.col = this.col + 1;
     }
 
-    moveTop = () => {
+    moveTop() {
         if (this.row >= 0) {
             this.row = this.row - 1;
         }
     }
-    moveBottom = () => {
+    moveBottom() {
         this.row = this.row + 1;
     }
 }

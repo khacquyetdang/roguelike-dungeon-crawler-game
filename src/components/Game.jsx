@@ -5,22 +5,16 @@ import _ from 'lodash';
 import WallCell from '../data/WallCell';
 import HallCell from '../data/HallCell';
 import RoomCell from '../data/RoomCell';
-import { setPlayer, addHealth, addExperience, generateNextLevel } from '../actions';
+import { setPlayer, movePlayer, addHealth, addExperience, generateNextLevel } from '../actions';
 import { debug } from '../config';
 import Food from './Food';
 import Monster from './Monster';
 import Bosses from './Bosses';
+import { PlayerDirectionEnum } from './Player';
 const showZoneWidth = 30;
 const showZoneHeight = 20;
 class Game extends Component {
 
-    constructor() {
-        super();
-        this.state = {
-            x: 0,
-            y: 0
-        }
-    }
     componentWillMount() {
         document.addEventListener("keydown", this.onKeyPress.bind(this));
     }
@@ -29,99 +23,28 @@ class Game extends Component {
         document.removeEventListener("keydown", this.onKeyPress.bind(this));
     }
 
+
     hitWall = () => {
 
     }
 
-    eatFood = (row, col) => {
-        var { player, ground } = this.props.games;
-        var foodItem = ground[row][col].child;
-        if (foodItem !== undefined && foodItem !== null
-            && foodItem instanceof Food && foodItem.isAvailable) {
-            foodItem.isAvailable = false;
-            this.props.addHealth(foodItem.health);
-            return true;
+    componentDidMount() {
+        if (this.props.games.bosses !== null && this.props.games.bosses.strength <= 0)
+        {
+            this.props.generateNextLevel();
         }
-        return false;
     }
-
-    /**
-     * @augments row , col
-     * @returns true if monster (or boss) is dead or the current cell is not a monster 
-     */
-    attackMonster = (row, col) => {
-        var { player, ground } = this.props.games;
-        var monsterItem = ground[row][col].child;
-        if (monsterItem !== undefined && monsterItem !== null
-            && monsterItem instanceof Monster && monsterItem.strength > 0) {
-            monsterItem.strength = monsterItem.strength - this.props.games.attack;
-            this.props.addHealth(monsterItem.damaged);
-            if (monsterItem.strength > 0) {
-                return false;
-            } else {
-                // @TODO add experience
-                this.props.addExperience(monsterItem.experience);        
-            }
-        }
-
-        var bossItem = ground[row][col].child;
-        
-        if (bossItem !== undefined && bossItem !== null
-            && bossItem instanceof Bosses && bossItem.strength > 0) {
-                bossItem.strength = bossItem.strength - this.props.games.attack;
-            this.props.addHealth(bossItem.damaged);
-            if (bossItem.strength > 0) {
-                return false;
-            } else {
-                this.props.addExperience(bossItem.experience);
-                this.props.generateNextLevel();       
-                
-                //@TODO pass to next level
-                // regenerate map for this level
-            }
-        }
-        return true;
-    }
-
-        /**
-     * @augments row , col
-     * @returns true if monster is dead or the current cell is not a monster 
-     */
-    attackBosses = (row, col) => {
-        var { player, ground } = this.props.games;
-        var bossItem = ground[row][col].child;
-        if (bossItem !== undefined && bossItem !== null
-            && bossItem instanceof Bosses && bossItem.strength > 0) {
-                bossItem.strength = bossItem.strength - this.props.games.attack;
-            this.props.addHealth(bossItem.damaged);
-            if (bossItem.strength > 0) {
-                return false;
-            } else {
-                this.props.addExperience(bossItem.experience);
-                this.props.generateNextLevel();       
-                
-                //@TODO pass to next level
-                // regenerate map for this level
-            }
-        }
-        return true;
-    }
-
-
     onKeyPress = (event) => {
         event.preventDefault();
         console.log("onKeyPress ", event.key);
         var { player, ground } = this.props.games;
         switch (event.key) {
             case "ArrowDown":
-                if (player.row < this.props.games.ground.length) {
+                if (player.row + 1 < this.props.games.ground.length) {
                     if (ground[player.row + 1][player.col] instanceof WallCell) {
                         return;
                     }
-                    this.eatFood(player.row + 1, player.col);
-                    if (this.attackMonster(player.row + 1, player.col)) {
-                        player.moveBottom();
-                    }
+                    this.props.movePlayer(PlayerDirectionEnum.BOTTOM);                
                 }
                 break;
             case "ArrowUp":
@@ -129,10 +52,7 @@ class Game extends Component {
                     if (ground[player.row - 1][player.col] instanceof WallCell) {
                         return;
                     }
-                    this.eatFood(player.row - 1, player.col);
-                    if (this.attackMonster(player.row - 1, player.col)) {
-                        player.moveTop();
-                    }
+                    this.props.movePlayer(PlayerDirectionEnum.TOP);
                 }
                 break;
             case "ArrowLeft":
@@ -140,27 +60,17 @@ class Game extends Component {
                     if (ground[player.row][player.col - 1] instanceof WallCell) {
                         return;
                     }
-                    this.eatFood(player.row, player.col - 1);
-                    if (this.attackMonster(player.row, player.col - 1)) {
-                        player.moveLeft();
-                    }
+                    this.props.movePlayer(PlayerDirectionEnum.LEFT);
                 }
                 break;
             case "ArrowRight":
-                if (player.col < this.props.games.ground[0].length) {
+                if (player.col + 1 < this.props.games.ground[0].length) {
                     if (ground[player.row][player.col + 1] instanceof WallCell) {
                         return;
                     }
-                    this.eatFood(player.row, player.col + 1);
-                    if (this.attackMonster(player.row, player.col + 1)) {
-                        player.moveRight();
-                    }
+                    this.props.movePlayer(PlayerDirectionEnum.RIGHT);
                 }
                 break;
-        }
-        this.props.setPlayer(player);
-        if (event.key == 'Enter') {
-            this.setState({ value: event.target.value })
         }
     }
 
@@ -213,8 +123,7 @@ class Game extends Component {
                     return item;
                 }
             }
-            if (item instanceof Monster)
-            {
+            if (item instanceof Monster) {
                 if (item.strength <= 0) {
                     return item;
                 }
@@ -233,10 +142,16 @@ class Game extends Component {
         var gameMapDiv = game2DArr.map((row, indexRow) => {
             var divRow = row.map(
                 (cell, index) => {
-                    if (debug) {
-                        return <div key={index}>{cell.render()} {cell.row + "," + cell.col}</div>;
-                    } else {
-                        return <div key={index}>{cell.render()}</div>;
+                    try {
+                        if (debug) {
+                            return <div key={index}>{cell.render()} {cell.row + "," + cell.col}</div>;
+                        } else {
+                            return <div key={index}>{cell.render()}</div>;
+                        }
+                    }
+                    catch (err) {
+                        var a = "Err";
+                        console.log("errr:", err);
                     }
                     //return <div className="GameCell" style={{backgroundColor: 'red'}}key={index}></div>
 
@@ -259,4 +174,4 @@ function mapStateToProps(state) {
     return { games: state };
 }
 
-export default connect(mapStateToProps, { setPlayer, addHealth, addExperience, generateNextLevel })(Game);
+export default connect(mapStateToProps, { setPlayer, movePlayer, addHealth, addExperience, generateNextLevel })(Game);

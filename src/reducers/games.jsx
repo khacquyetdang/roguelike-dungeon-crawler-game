@@ -4,22 +4,24 @@ import {
     ADD_HEALTH, ADD_EXPERIENCE,
     EXP_WARRIOR, EXP_GLADIATOR, EXP_MAGE, EXP_BERSERKER,
     GENERATE_NEXT_LEVEL,
+    PLAYER_MOVE,
 } from '../constant';
-import Player, { PlayerEnum } from '../components/Player';
+import Player, { PlayerEnum, PlayerDirectionEnum } from '../components/Player';
 import generateDungeonTreeForMap, {
     createRoomFromBSPTree,
     createHallFromBSPTree,
-    generateGroundFromTree,    
+    generateGroundFromTree,
 } from '../data/BSPDungeon';
 import {
     getRandomInt
 } from '../data/Utils';
+import _ from 'lodash';
 
 
 import Food, { FoodEnum } from '../components/Food';
 import Monster, { MonsterEnum } from '../components/Monster';
 import Bosses, { BossesType } from '../components/Bosses';
-
+import WallCell from '../data/WallCell';
 
 export const initialState = {
     ground: null,
@@ -33,17 +35,111 @@ export const initialState = {
     attack: 7,
     level: 0,
     nextLevel: 100,
+    bosses: null,
     dungeon: 1
 }
 export default function game(state = initialState, action) {
     switch (action.type) {
-        case GENERATE_NEXT_LEVEL : {
+        case GENERATE_NEXT_LEVEL: {
             return generateLevel(state);
         }
         case SET_PLAYER: {
             return Object.assign({}, state, {
                 player: action.player
             });
+        }
+        case PLAYER_MOVE: {
+            var newState = _.cloneDeep(state);//JSON.parse(JSON.stringify(state));
+            var player = newState.player;
+            var ground = newState.ground;
+
+            const eatFood = (row, col) => {
+                var foodItem = ground[row][col].child;
+                if (foodItem !== undefined && foodItem !== null
+                    && foodItem instanceof Food && foodItem.isAvailable) {
+                    foodItem.isAvailable = false;
+                    player.addHealth(foodItem.health);
+                    newState.health = player.health;
+                    return true;
+                }
+                return false;
+            }
+
+            const attackMonster = (row, col) => {
+                var monsterItem = ground[row][col].child;
+                if (monsterItem !== undefined && monsterItem !== null
+                    && monsterItem instanceof Monster && monsterItem.strength > 0) {
+                    monsterItem.strength = monsterItem.strength - newState.attack;
+                    player.addHealth(monsterItem.damaged);
+                    newState.health = player.health;                
+                    if (monsterItem.strength > 0) {
+                        return false;
+                    } else {
+                        // @TODO add experience
+                        player.addExperience(monsterItem.experience);
+                        newState.experience = player.experience;                        
+                        return true;
+                    }
+                }
+        
+                var bossItem = ground[row][col].child;
+        
+                if (bossItem !== undefined && bossItem !== null
+                    && bossItem instanceof Bosses && bossItem.strength > 0) {
+                    bossItem.strength = bossItem.strength - newState.attack;
+                    player.addHealth(bossItem.damaged);
+                    newState.health = player.health;
+                    
+                    if (bossItem.strength > 0) {
+                        return false;
+                    } else {
+                        player.addExperience(bossItem.experience);
+                        newState.experience = player.experience;                                                
+                        //this.props.generateNextLevel();
+                    }
+                }
+                return true;
+            };
+            switch (action.direction) {
+                case PlayerDirectionEnum.LEFT: {
+                    eatFood(player.row, player.col - 1);
+                    if (attackMonster(player.row, player.col - 1)) {
+                        //this.props.movePlayer(PlayerDirectionEnum.LEFT);
+                        player.moveLeft();
+                    }
+                    break;
+                }
+                case PlayerDirectionEnum.TOP: {
+                    eatFood(player.row - 1, player.col);
+                    if (attackMonster(player.row - 1, player.col)) {
+                        player.moveTop();
+                    }
+                    break;
+                }
+                case PlayerDirectionEnum.RIGHT: {
+                    eatFood(player.row, player.col + 1);
+                    if (attackMonster(player.row, player.col + 1)) {
+                        player.moveRight();
+                    }
+                    break;
+                }
+                case PlayerDirectionEnum.BOTTOM: {
+                    if (player.row + 1 < newState.ground.length) {
+                        if (ground[player.row + 1][player.col] instanceof WallCell) {
+                            return;
+                        }
+                        eatFood(player.row + 1, player.col);
+                        if (attackMonster(player.row + 1, player.col)) {
+                            //this.props.movePlayer(PlayerDirectionEnum.BOTTOM);
+                            player.moveBottom();
+                        }
+                        //player.moveBottom();
+                        //this.props.setPlayer(player);
+                    }
+                    break;
+                }
+            }
+            return newState;
         }
         case SET_MAPWITHROOMANDHALL: {
             return Object.assign({}, state, {
@@ -76,7 +172,7 @@ export default function game(state = initialState, action) {
             var experience = state.experience + action.experience;
             var { player } = state;
             switch (player.type) {
-                case PlayerEnum.WARIOR: {
+                case PlayerEnum.WARRIOR: {
                     if (experience >= EXP_GLADIATOR) {
                         experience = 0;
                         player = new Player(player.row, player.col, PlayerEnum.GLADIATOR, player.health, 0);
@@ -134,18 +230,22 @@ function generateLevel(state) {
     var treeWithRoomAndHall = createHallFromBSPTree(treeRoom, 10);
 
     var ground = generateGroundFromTree(treeWithRoomAndHall);
-    
+
     const generatePlayerInit = () => {
         var room1 = treeWithRoomAndHall.getLeafs()[0];
         var y = getRandomInt(room1.y, room1.y + room1.height - 1);
         var x = getRandomInt(room1.x, room1.x + room1.width - 1);
-
         var player = new Player(x, y, PlayerEnum.WARRIOR, 100);
+
+        if (state.player !== null) {
+            player.type = state.player.type;
+            player.health = state.player.health;
+        }
         return player;
     };
 
     var player = generatePlayerInit();
-    
+
     /**
  * @description 
  * each room will one to 3 food
@@ -227,12 +327,15 @@ function generateLevel(state) {
     };
 
     var { foods, items, bosses } = generateGameItems();
-    
-    return Object.assign({}, state, {
-        level, player, ground,
+    //console.assert(ground[player.row][player.col] === undefined);
+    // if (ground[player.row + 1] === undefined);
+
+    var newState = Object.assign({}, state, {
+        level: level + 1, player, ground,
         foods,
         items,
         bosses,
     });
+    return newState;
 
 }

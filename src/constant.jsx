@@ -7,9 +7,15 @@ export const ADD_HEALTH = "ADD_HEALTH";
 export const ADD_EXPERIENCE = "ADD_EXPERIENCE";
 export const GENERATE_NEXT_LEVEL = "GENERATE_NEXT_LEVEL";
 
+export const PLAYER_MOVE = "PLAYER_MOVE";
 
 
+/*
 export const EXP_WARRIOR = 10;
 export const EXP_GLADIATOR = 30;
 export const EXP_BERSERKER = 60;
-export const EXP_MAGE = 90;
+export const EXP_MAGE = 90;*/
+export const EXP_WARRIOR = 1;
+export const EXP_GLADIATOR = 3;
+export const EXP_BERSERKER = 6;
+export const EXP_MAGE = 9;

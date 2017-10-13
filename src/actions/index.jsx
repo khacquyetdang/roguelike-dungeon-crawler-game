@@ -1,6 +1,7 @@
 import {
     SET_MAPWITHROOMANDHALL, SET_GROUND, SET_PLAYER, SET_FOODS,
-    SET_ITEMS, ADD_HEALTH, ADD_EXPERIENCE, GENERATE_NEXT_LEVEL
+    SET_ITEMS, ADD_HEALTH, ADD_EXPERIENCE, GENERATE_NEXT_LEVEL,
+    PLAYER_MOVE,
 } from '../constant';
 
 /**
@@ -68,3 +69,11 @@ export const addExperience = makeActionCreator(ADD_EXPERIENCE, 'experience');
  * @param {*} experience 
  */
 export const generateNextLevel = makeActionCreator(GENERATE_NEXT_LEVEL);
+
+
+/**
+ * 
+ * @param {*} experience 
+ */
+export const movePlayer = makeActionCreator(PLAYER_MOVE, 'direction');
+
