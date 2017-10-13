@@ -45,7 +45,7 @@ class Player extends Cell {
         this.experience = experience;
     }
 
-    getParentStyles = () => {
+    getParentStyles () {
         if (this.parent !== undefined && this.parent !== null) {
             return this.parent.getStyle();
         }
@@ -74,7 +74,7 @@ class Player extends Cell {
         }
         return "WARRIOR";
     }
-    getStyle = () => {
+    getStyle() {
         switch (this.type) {
             case PlayerEnum.WARRIOR: {
                 return styles.warrior;
@@ -105,7 +105,7 @@ class Player extends Cell {
     }
     render() {
         return (<div
-            className="GameCell"
+            className="GameCell PlayerContainer"
             style={this.getParentStyles()}>
             <div
                 className="Player"
