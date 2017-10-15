@@ -112,8 +112,6 @@ class Player extends Cell {
             this.type = PlayerEnum.MAGE;
             this.experience = 0;
         }
-
-
     }
     render() {
         return (<div

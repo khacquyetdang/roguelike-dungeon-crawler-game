@@ -8,6 +8,8 @@ export const ADD_EXPERIENCE = "ADD_EXPERIENCE";
 export const GENERATE_NEXT_LEVEL = "GENERATE_NEXT_LEVEL";
 
 export const PLAYER_MOVE = "PLAYER_MOVE";
+export const TOGGLE_SOUND = "TOGGLE_SOUND";
+export const SET_VOLUME = "SET_VOLUME";
 
 
 /*

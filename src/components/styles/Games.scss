@@ -1,7 +1,8 @@
 .Toolsbar {
     display: flex;
     flex-direction: row;
-    margin: 10px
+    margin: 10px;
+    padding: 5px;
 }
 
 .GameRow {
@@ -36,4 +37,70 @@ $img_food_size: 32px;
     min-height: $img_food_size;
     display: flex;
     align-items: center;
+}
+
+.Health,
+.Weapon,
+.Attack,
+.Hero,
+.Experience,
+.Dungeon,
+.Sound {
+    border: solid 1px;
+    margin: 5px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.Sound {
+    display: inline-flex;
+}
+
+.soundSlider {
+    min-width: 100px;
+}
+
+.rangeslider-horizontal {
+    height: 6px;
+    border-radius: 5px;
+}
+
+$cursorSliderSize: 20px;
+.rangeslider-horizontal .rangeslider__handle {
+    width: $cursorSliderSize;
+    height: $cursorSliderSize;
+    border-radius: $cursorSliderSize;
+}
+
+.rangeslider-horizontal .rangeslider__handle:after {
+    content: ' ';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: 5px;
+    left: 5px;
+}
+
+$toolTipSliderSize: 30px;
+.rangeslider .rangeslider__handle-tooltip {
+    width: $toolTipSliderSize;
+    height: $toolTipSliderSize;
+    text-align: center;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    font-weight: normal;
+    font-size: 14px;
+    transition: all 100ms ease-in;
+    border-radius: 4px;
+    display: inline-block;
+    color: white;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+}
+
+.rangeslider .rangeslider__handle-tooltip span {
+    margin-top: 12px;
+    display: inline-block;
+    line-height: 100%;
 }

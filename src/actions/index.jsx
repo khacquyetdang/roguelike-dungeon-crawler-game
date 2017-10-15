@@ -2,6 +2,8 @@ import {
     SET_MAPWITHROOMANDHALL, SET_GROUND, SET_PLAYER, SET_FOODS,
     SET_ITEMS, ADD_HEALTH, ADD_EXPERIENCE, GENERATE_NEXT_LEVEL,
     PLAYER_MOVE,
+    TOGGLE_SOUND,
+    SET_VOLUME
 } from '../constant';
 
 /**
@@ -76,4 +78,14 @@ export const generateNextLevel = makeActionCreator(GENERATE_NEXT_LEVEL);
  * @param {*} experience 
  */
 export const movePlayer = makeActionCreator(PLAYER_MOVE, 'direction');
+
+
+export const toggleSound = makeActionCreator(TOGGLE_SOUND);
+
+
+/**
+ * 
+ * @param {*} experience 
+ */
+export const setVolume = makeActionCreator(SET_VOLUME, 'volume');
 

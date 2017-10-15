@@ -4,7 +4,7 @@ import {
     ADD_HEALTH, ADD_EXPERIENCE,
     EXP_WARRIOR, EXP_GLADIATOR, EXP_MAGE, EXP_BERSERKER,
     GENERATE_NEXT_LEVEL,
-    PLAYER_MOVE,
+    PLAYER_MOVE,TOGGLE_SOUND, SET_VOLUME
 } from '../constant';
 import Player, { PlayerEnum, PlayerDirectionEnum } from '../components/Player';
 import generateDungeonTreeForMap, {
@@ -36,12 +36,32 @@ export const initialState = {
     level: 0,
     nextLevel: 100,
     bosses: null,
-    dungeon: 1
+    dungeon: 1,
+    sound_to_play: '',
+    sound_on : true,
+    volume: 50,
 }
 export default function game(state = initialState, action) {
     switch (action.type) {
+        case SET_VOLUME: {
+            return Object.assign({}, state, {
+                volume: action.volume,
+                sound_to_play: ''                
+            });
+        }
+        case TOGGLE_SOUND: {
+            var newSound = !state.sound_on;
+            return Object.assign({}, state, {
+                sound_on: newSound
+            });
+
+        }
         case GENERATE_NEXT_LEVEL: {
-            return generateLevel(state);
+            var newState = generateLevel(state);
+            if (newState.level > 1) {
+                newState.sound_to_play = 'snd_levelup.mp3';
+            }
+            return newState;
         }
         case SET_PLAYER: {
             return Object.assign({}, state, {
@@ -53,6 +73,7 @@ export default function game(state = initialState, action) {
             var player = newState.player;
             var ground = newState.ground;
 
+            newState.sound_to_play = 'snd_step.mp3';
             const eatFood = (row, col) => {
                 var foodItem = ground[row][col].child;
                 if (foodItem !== undefined && foodItem !== null
@@ -60,6 +81,7 @@ export default function game(state = initialState, action) {
                     foodItem.isAvailable = false;
                     player.addHealth(foodItem.health);
                     newState.health = player.health;
+                    newState.sound_to_play = 'snd_eat.mp3';
                     return true;
                 }
                 return false;
@@ -71,30 +93,33 @@ export default function game(state = initialState, action) {
                     && monsterItem instanceof Monster && monsterItem.strength > 0) {
                     monsterItem.strength = monsterItem.strength - newState.attack;
                     player.addHealth(monsterItem.damaged);
-                    newState.health = player.health;                
+                    newState.health = player.health;
+                    newState.sound_to_play = 'snd_hit.mp3';
+
                     if (monsterItem.strength > 0) {
                         return false;
                     } else {
                         // @TODO add experience
                         player.addExperience(monsterItem.experience);
-                        newState.experience = player.experience;                        
+                        newState.experience = player.experience;
                         return true;
                     }
                 }
-        
+
                 var bossItem = ground[row][col].child;
-        
+
                 if (bossItem !== undefined && bossItem !== null
                     && bossItem instanceof Bosses && bossItem.strength > 0) {
+                    newState.sound_to_play = 'snd_hit.mp3';
                     bossItem.strength = bossItem.strength - newState.attack;
                     player.addHealth(bossItem.damaged);
                     newState.health = player.health;
-                    
+
                     if (bossItem.strength > 0) {
                         return false;
                     } else {
                         player.addExperience(bossItem.experience);
-                        newState.experience = player.experience;                                                
+                        newState.experience = player.experience;
                         //this.props.generateNextLevel();
                     }
                 }
