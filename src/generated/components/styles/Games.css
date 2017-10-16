@@ -1,3 +1,9 @@
+.GamesContainer {
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+  padding: 5px; }
+
 .Toolsbar {
   display: flex;
   flex-direction: row;

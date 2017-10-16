@@ -37,6 +37,20 @@ class Monster extends Cell {
         }
     }
 
+    getName = () => {
+        switch (this.type) {
+            case  MonsterEnum.RAT: {
+                return "Rat";
+            }
+            case MonsterEnum.CRAB: {
+                return  "Crab";
+            }
+            default: {
+                return  "Rat";
+            }
+        }
+    }
+
     getParentStyles = () => {
         if (this.parent !== undefined && this.parent !== null) {
             return this.parent.getStyle();

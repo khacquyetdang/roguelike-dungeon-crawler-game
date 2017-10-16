@@ -11,7 +11,7 @@ import Food from './Food';
 import Monster from './Monster';
 import Bosses from './Bosses';
 import { PlayerDirectionEnum } from './Player';
-const showZoneWidth = 30;
+const showZoneWidth = 35;
 const showZoneHeight = 20;
 class Game extends Component {
 
@@ -161,12 +161,10 @@ class Game extends Component {
             return <div key={indexRow} className="GameRow">{divRow}</div>
         });
         return (
-            <div onKeyDown={this.onKeyPress}>
-                <div
-                    className="gameMap" >
-                    {gameMapDiv}
-                </div>
-            </div>
+            <div onKeyDown={this.onKeyPress}
+                className="gameMap" >
+                {gameMapDiv}
+            </div >
         )
     }
 }

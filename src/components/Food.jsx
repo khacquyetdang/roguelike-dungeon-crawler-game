@@ -83,6 +83,23 @@ class Food extends Cell {
         }
     }
 
+    getName = () => {
+        switch (this.type) {
+            case FoodEnum.BREAD: {
+                return "bread";
+            }
+            case FoodEnum.CHEESE: {
+                return  "cheese";
+            }
+            case FoodEnum.MEAT: {
+                return "meat";
+            }
+            default: {
+                return  "bread";
+            }
+        }
+    }
+
     getParentStyles = () => {
         if (this.parent !== undefined && this.parent !== null) {
             return this.parent.getStyle();

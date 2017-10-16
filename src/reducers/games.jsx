@@ -4,7 +4,7 @@ import {
     ADD_HEALTH, ADD_EXPERIENCE,
     EXP_WARRIOR, EXP_GLADIATOR, EXP_MAGE, EXP_BERSERKER,
     GENERATE_NEXT_LEVEL,
-    PLAYER_MOVE,TOGGLE_SOUND, SET_VOLUME
+    PLAYER_MOVE, TOGGLE_SOUND, SET_VOLUME
 } from '../constant';
 import Player, { PlayerEnum, PlayerDirectionEnum } from '../components/Player';
 import generateDungeonTreeForMap, {
@@ -23,13 +23,14 @@ import Monster, { MonsterEnum } from '../components/Monster';
 import Bosses, { BossesType } from '../components/Bosses';
 import WallCell from '../data/WallCell';
 
+const initHealth = 30;
 export const initialState = {
     ground: null,
     mapWithRoomAndHall: null,
     player: null,
     foods: [],
     items: [],
-    health: 100,
+    health: initHealth,
     weapons: [],
     experience: 0,
     attack: 7,
@@ -38,15 +39,16 @@ export const initialState = {
     bosses: null,
     dungeon: 1,
     sound_to_play: '',
-    sound_on : true,
+    sound_on: true,
     volume: 50,
+    messages: []
 }
 export default function game(state = initialState, action) {
     switch (action.type) {
         case SET_VOLUME: {
             return Object.assign({}, state, {
                 volume: action.volume,
-                sound_to_play: ''                
+                sound_to_play: ''
             });
         }
         case TOGGLE_SOUND: {
@@ -61,6 +63,7 @@ export default function game(state = initialState, action) {
             if (newState.level > 1) {
                 newState.sound_to_play = 'snd_levelup.mp3';
             }
+            newState.messages.push('You started the level ' + newState.level);
             return newState;
         }
         case SET_PLAYER: {
@@ -82,6 +85,7 @@ export default function game(state = initialState, action) {
                     player.addHealth(foodItem.health);
                     newState.health = player.health;
                     newState.sound_to_play = 'snd_eat.mp3';
+                    newState.messages.push("You have eaten " + foodItem.getName());
                     return true;
                 }
                 return false;
@@ -97,9 +101,11 @@ export default function game(state = initialState, action) {
                     newState.sound_to_play = 'snd_hit.mp3';
 
                     if (monsterItem.strength > 0) {
+                        newState.messages.push("You attacked " + monsterItem.getName());
                         return false;
                     } else {
                         // @TODO add experience
+                        newState.messages.push("You killed " + monsterItem.getName());
                         player.addExperience(monsterItem.experience);
                         newState.experience = player.experience;
                         return true;
@@ -116,8 +122,10 @@ export default function game(state = initialState, action) {
                     newState.health = player.health;
 
                     if (bossItem.strength > 0) {
+                        newState.messages.push("You attacked the bosses " + bossItem.getName());
                         return false;
                     } else {
+                        newState.messages.push("You killed the bosses " + bossItem.getName());
                         player.addExperience(bossItem.experience);
                         newState.experience = player.experience;
                         //this.props.generateNextLevel();
@@ -260,7 +268,7 @@ function generateLevel(state) {
         var room1 = treeWithRoomAndHall.getLeafs()[0];
         var y = getRandomInt(room1.y, room1.y + room1.height - 1);
         var x = getRandomInt(room1.x, room1.x + room1.width - 1);
-        var player = new Player(x, y, PlayerEnum.WARRIOR, 100);
+        var player = new Player(x, y, PlayerEnum.WARRIOR, initHealth);
 
         if (state.player !== null) {
             player.type = state.player.type;
@@ -357,6 +365,7 @@ function generateLevel(state) {
 
     var newState = Object.assign({}, state, {
         level: level + 1, player, ground,
+        messages : state.messages.slice(0),
         foods,
         items,
         bosses,

@@ -21,38 +21,38 @@ class Bosses extends Cell {
         this.type = type;
         switch (this.type) {
             case BossesType.DM300: {
-                this.strength = 30;
-                this.damaged = -6;
+                this.strength = 60;
+                this.damaged = -12;
                 this.experience = 10;
                 break;
             }
             case BossesType.GOO: {
-                this.strength = 35;
-                this.damaged = -7;
+                this.strength = 70;
+                this.damaged = -14;
                 this.experience = 15;
                 break;
             }
             case BossesType.TENGU: {
-                this.strength = 40;
-                this.damaged = -8;
+                this.strength = 100;
+                this.damaged = -20;
                 this.experience = 25;
                 break;
             }
             case BossesType.YOG_DZEWA: {
-                this.strength = 45;
-                this.damaged = -10;
+                this.strength = 150;
+                this.damaged = -20;
                 this.experience = 30;
                 break;
             }
             case BossesType.DWARF_KING: {
-                this.strength = 45;
-                this.damaged = -15;
+                this.strength = 200;
+                this.damaged = -30;
                 this.experience = 40;
                 break;    
             }
             default: {
-                this.strength = 30;
-                this.damaged = -6;
+                this.strength = 60;
+                this.damaged = -12;
                 this.experience = 10;
                 break;
             }
@@ -89,6 +89,30 @@ class Bosses extends Cell {
             }
         }
     }
+
+    getName = () => {
+        switch (this.type) {
+            case BossesType.DM300: {
+                return "DM300";
+            }
+            case BossesType.GOO: {
+                return "Goo";
+            }
+            case BossesType.TENGU: {
+                return "Tengu";
+            }
+            case BossesType.YOG_DZEWA: {
+                return "Yog Dzewa";
+            }
+            case BossesType.DWARF_KING: {
+                return "Dwarf King";
+            }
+            default: {
+                return "DM300";
+            }
+        }
+    }
+
 
     render() {
         return (<div

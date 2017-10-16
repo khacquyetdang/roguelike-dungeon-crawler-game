@@ -6,6 +6,7 @@ import {
 } from 'react-redux';
 import Toolsbar from './Toolsbar';
 import Game from './Game';
+import ConsoleLog from './ConsoleLog';
 import '../generated/components/styles/App.css';
 import {
     generateNextLevel
@@ -33,7 +34,10 @@ class App extends Component {
         return (
             <div className="App">
                 <Toolsbar />
+                <div className="GamesContainer">
                 <Game ref="games" />
+                <ConsoleLog />            
+                </div>
             </div>
         );
     }

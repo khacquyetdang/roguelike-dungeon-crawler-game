@@ -12,12 +12,12 @@ export const TOGGLE_SOUND = "TOGGLE_SOUND";
 export const SET_VOLUME = "SET_VOLUME";
 
 
-/*
 export const EXP_WARRIOR = 10;
 export const EXP_GLADIATOR = 30;
 export const EXP_BERSERKER = 60;
-export const EXP_MAGE = 90;*/
+export const EXP_MAGE = 90;
+/*
 export const EXP_WARRIOR = 1;
 export const EXP_GLADIATOR = 3;
 export const EXP_BERSERKER = 6;
-export const EXP_MAGE = 9;
+export const EXP_MAGE = 9;*/
