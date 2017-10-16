@@ -24,12 +24,19 @@ class Toolsbar extends Component {
         this.props.setVolume(value);
     };
 
+    getAttack = () => {
+        if (this.props.games.player !== undefined && this.props.games.player !== null) {
+            return this.props.games.player.attack; 
+        }
+        return 0;
+    }
+
     render() {
         return (<div
             className="Toolsbar">
             <div className="Health">Health : {this.props.games.health + "   "} &nbsp; </div>
             <div className="Weapon"> Weapon :stick &nbsp;</div>
-            <div className="Attack"> Attack : 7 &nbsp;</div>
+            <div className="Attack"> Attack : { this.getAttack() } &nbsp;</div>
             <div className="Hero">  You are: {this.getPlayerName()}&nbsp;</div>
             <div className="Experience"> Experience : {this.props.games.experience} &nbsp;</div>
             <div className="Dungeon"> Dungeon : {this.props.games.level} &nbsp;</div>

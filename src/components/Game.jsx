@@ -11,7 +11,7 @@ import Food from './Food';
 import Monster from './Monster';
 import Bosses from './Bosses';
 import { PlayerDirectionEnum } from './Player';
-const showZoneWidth = 35;
+const showZoneWidth = 36;
 const showZoneHeight = 20;
 class Game extends Component {
 

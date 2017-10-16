@@ -17,8 +17,8 @@
     flex-direction: row;
 }
 
-$cell_size: 34px;
-$img_food_size: 32px;
+$cell_size: 25px;
+$img_food_size: 24px;
 .GameCell,
 .Player,
 .Food {
@@ -30,7 +30,7 @@ $img_food_size: 32px;
     min-height: $cell_size;
     display: flex;
     align-items: center;
-    border: solid 1px #A8A7A7;
+    border: solid 0.5px #A8A7A7;
 }
 
 .imgFood,
@@ -55,7 +55,7 @@ $img_food_size: 32px;
 .Sound {
     border: solid 1px;
     margin: 5px;
-    padding: 5px;
+    padding: 2px 0px 0px 2px;
     display: flex;
     align-items: center;
 }

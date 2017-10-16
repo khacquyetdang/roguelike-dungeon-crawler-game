@@ -95,7 +95,7 @@ export default function game(state = initialState, action) {
                 var monsterItem = ground[row][col].child;
                 if (monsterItem !== undefined && monsterItem !== null
                     && monsterItem instanceof Monster && monsterItem.strength > 0) {
-                    monsterItem.strength = monsterItem.strength - newState.attack;
+                    monsterItem.strength = monsterItem.strength - player.attack;
                     player.addHealth(monsterItem.damaged);
                     newState.health = player.health;
                     newState.sound_to_play = 'snd_hit.mp3';
@@ -117,7 +117,7 @@ export default function game(state = initialState, action) {
                 if (bossItem !== undefined && bossItem !== null
                     && bossItem instanceof Bosses && bossItem.strength > 0) {
                     newState.sound_to_play = 'snd_hit.mp3';
-                    bossItem.strength = bossItem.strength - newState.attack;
+                    bossItem.strength = bossItem.strength - player.attack;
                     player.addHealth(bossItem.damaged);
                     newState.health = player.health;
 

@@ -1,6 +1,6 @@
 import Cell from '../data/Cell';
 import React from 'react';
-import { debug } from '../config';
+import { debug, baseUrl } from '../config';
 import { EXP_BERSERKER, EXP_GLADIATOR, EXP_MAGE, EXP_WARRIOR} from '../constant';
 export const PlayerEnum = {
     WARRIOR: 1,
@@ -38,11 +38,12 @@ class Player extends Cell {
      * @param {PlayerEnum} type 
      * @param {number} health 
      */
-    constructor(row, col, type, health, experience = 0) {
+    constructor(row, col, type, health, experience = 0, attack = 7) {
         super(row, col);
         this.type = type;
         this.health = health;
         this.experience = experience;
+        this.attack = attack;
     }
 
     getParentStyles() {
@@ -105,26 +106,39 @@ class Player extends Cell {
         if (this.type === PlayerEnum.WARRIOR && this.experience >= EXP_GLADIATOR) {
             this.type = PlayerEnum.GLADIATOR;
             this.experience = 0;
+            this.attack = 10;
         } else if (this.type === PlayerEnum.GLADIATOR && this.experience >= EXP_BERSERKER) {
             this.type = PlayerEnum.BERSERKER;
             this.experience = 0;
+            this.attack = 12;            
         } else if (this.type === PlayerEnum.BERSERKER && this.experience >= EXP_MAGE) {
             this.type = PlayerEnum.MAGE;
-            this.experience = 0;
+            this.experience = 15;
         }
+    }
+
+    getImageSrc(){
+        switch (this.type) {
+            case PlayerEnum.WARRIOR: {
+                return baseUrl + "/image/player/warrior.png";
+            }
+            case PlayerEnum.GLADIATOR: {
+                return baseUrl + "/image/player/gladiator.png";
+            }
+            case PlayerEnum.BERSERKER: {
+                return baseUrl + "/image/player/berserker.png";
+            }
+            case PlayerEnum.MAGE: {
+                return baseUrl + "/image/player/mage.png";
+            }
+        }
+        return baseUrl + "/image/player/warrior.png";        
     }
     render() {
         return (<div
             className="GameCell PlayerContainer"
             style={this.getParentStyles()}>
-            <div
-                className="Player"
-                style={this.getStyle()}>
-
-                {
-                    this.debugPlayer()
-                }
-            </div>
+            <img src={this.getImageSrc()} className="imgFood img-responsive Player" />
         </div>);
     }
 

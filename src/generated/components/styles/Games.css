@@ -17,25 +17,25 @@
 .GameCell,
 .Player,
 .Food {
-  width: 34px;
-  height: 34px;
-  max-width: 34px;
-  min-width: 34px;
-  max-height: 34px;
-  min-height: 34px;
+  width: 25px;
+  height: 25px;
+  max-width: 25px;
+  min-width: 25px;
+  max-height: 25px;
+  min-height: 25px;
   display: flex;
   align-items: center;
-  border: solid 1px #A8A7A7; }
+  border: solid 0.5px #A8A7A7; }
 
 .imgFood,
 .imgMonster,
 .imgBosses {
-  width: 32px;
-  height: 32px;
-  max-width: 32px;
-  min-width: 32px;
-  max-height: 32px;
-  min-height: 32px;
+  width: 24px;
+  height: 24px;
+  max-width: 24px;
+  min-width: 24px;
+  max-height: 24px;
+  min-height: 24px;
   display: flex;
   align-items: center; }
 
@@ -48,7 +48,7 @@
 .Sound {
   border: solid 1px;
   margin: 5px;
-  padding: 5px;
+  padding: 2px 0px 0px 2px;
   display: flex;
   align-items: center; }
 
