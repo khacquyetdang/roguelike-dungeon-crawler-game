@@ -1,20 +1,52 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Modal from 'react-modal';
 import '../generated/components/styles/Games.css';
 import _ from 'lodash';
 import WallCell from '../data/WallCell';
 import HallCell from '../data/HallCell';
 import RoomCell from '../data/RoomCell';
-import { setPlayer, movePlayer, addHealth, addExperience, generateNextLevel } from '../actions';
+import {
+    ANIMATION_GAME_OVER, ANIMATION_NONE, ANIMATION_SWITCH_HERO, ANIMATION_NEW_LEVEL,
+} from '../constant';
+import { setPlayer, movePlayer, addHealth, addExperience, generateNextLevel, turnOffAnimation } from '../actions';
 import { debug } from '../config';
 import Food from './Food';
 import Monster from './Monster';
 import Bosses from './Bosses';
 import { PlayerDirectionEnum } from './Player';
+import { baseUrl } from '../config';
 const showZoneWidth = 36;
 const showZoneHeight = 20;
+
+const customStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        borderRadius: '50px',
+        transform: 'translate(-50%, -50%)',
+        border: 'solid 10px',
+        color: '#a94301',
+        fontSize: '16px',
+        fontStyle: 'bold',
+        maxWidth: '3500px',
+        maxHeight: '450px',
+        textAlign: 'center',
+        overflow: 'unset',
+    }
+};
 class Game extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isModalOpen: false
+        };
+    }
     componentWillMount() {
         document.addEventListener("keydown", this.onKeyPress.bind(this));
     }
@@ -31,6 +63,10 @@ class Game extends Component {
     onKeyPress = (event) => {
         event.preventDefault();
         console.log("onKeyPress ", event.key);
+        if (this.props.games.animation != ANIMATION_NONE) {
+            console.log("animation in progress, waiting");
+            return;
+        }
         var { player, ground } = this.props.games;
         switch (event.key) {
             case "ArrowDown":
@@ -103,6 +139,55 @@ class Game extends Component {
         }
     }
 
+
+    requestCloseFn = () => {
+        this.setState({ isModalOpen: false });
+    }
+
+    showAnimation = () => {
+        const animationTimeOut = 5000;
+        const setAnimationTimeOut = () => {
+            setTimeout(function () {
+                this.props.turnOffAnimation();
+            }.bind(this), animationTimeOut);
+        }
+
+        const createModal = (text, imgUrl) => {
+            
+            return (<Modal
+                isOpen={this.props.games.animation != ANIMATION_NONE}
+                onRequestClose={this.requestCloseFn}
+                closeTimeoutMS={500}
+                style={customStyles}
+            >
+                <img src={baseUrl + "animation/" + imgUrl} className="img-responsive" />
+                <div className="centerHorizontal">
+                    <div className="congratText">
+                        {text}
+                    </div></div>
+            </Modal>);
+        }
+        if (this.props.games.animation === ANIMATION_SWITCH_HERO) {
+
+            setAnimationTimeOut();
+            var text = "Wow, you become the heros " +this.props.games.player.getName();
+            var imgUrl = "switchHeros.gif";
+            return createModal(text, imgUrl);
+        }
+
+        if (this.props.games.animation === ANIMATION_NEW_LEVEL) {
+         
+            setAnimationTimeOut();
+
+            var congratText = "Congratulation, you have finished level" + (this.props.games.level - 1);
+            
+            var imgUrl = "nextlevel.gif";
+            return createModal(congratText, imgUrl);
+        }
+
+        return null;
+    }
+
     render() {
 
         var game2DArr = this.props.games.ground;
@@ -154,15 +239,17 @@ class Game extends Component {
                         var a = "Err";
                         console.log("errr:", err);
                     }
-                    //return <div className="GameCell" style={{backgroundColor: 'red'}}key={index}></div>
+                    //return <div className="GameCell" style={{ backgroundColor: 'red' }} key={index}></div>
 
                 }
             );
             return <div key={indexRow} className="GameRow">{divRow}</div>
         });
         return (
+
             <div onKeyDown={this.onKeyPress}
                 className="gameMap" >
+                {this.showAnimation()}
                 {gameMapDiv}
             </div >
         )
@@ -173,4 +260,4 @@ function mapStateToProps(state) {
     return { games: state };
 }
 
-export default connect(mapStateToProps, { setPlayer, movePlayer, addHealth, addExperience, generateNextLevel })(Game);
+export default connect(mapStateToProps, { setPlayer, movePlayer, addHealth, addExperience, generateNextLevel, turnOffAnimation })(Game);

@@ -3,7 +3,7 @@ import {
     SET_ITEMS, ADD_HEALTH, ADD_EXPERIENCE, GENERATE_NEXT_LEVEL,
     PLAYER_MOVE,
     TOGGLE_SOUND,
-    SET_VOLUME
+    SET_VOLUME, TURN_OFF_ANIMATION
 } from '../constant';
 
 /**
@@ -89,3 +89,4 @@ export const toggleSound = makeActionCreator(TOGGLE_SOUND);
  */
 export const setVolume = makeActionCreator(SET_VOLUME, 'volume');
 
+export const turnOffAnimation = makeActionCreator(TURN_OFF_ANIMATION);

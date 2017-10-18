@@ -1,10 +1,10 @@
-
 .GamesContainer {
     display: flex;
     flex-direction: row;
     margin: 10px;
     padding: 5px;
 }
+
 .Toolsbar {
     display: flex;
     flex-direction: row;
@@ -111,3 +111,30 @@ $toolTipSliderSize: 30px;
     display: inline-block;
     line-height: 100%;
 }
+
+.ReactModalPortal>div {
+    opacity: 0;
+}
+
+.centerHorizontal {
+    display: flex;
+    justify-content: center;
+}
+.ReactModalPortal .ReactModal__Overlay {
+    display: flex;
+    flex-direction: col;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.15) !important;
+    animation: rollIn 3s;
+    &--after-open {
+        opacity: 1;
+    }
+
+    & .congratText {
+        animation: jello 10s infinite;
+        max-width: 200px;
+        text-align: center;
+    }
+  
+}
+

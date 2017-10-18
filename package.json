@@ -13,6 +13,7 @@
         "react-bootstrap": "^0.31.2",
         "react-dom": "^15.6.1",
         "react-game-kit": "^0.0.2",
+        "react-modal": "^3.0.3",
         "react-rangeslider": "^2.2.0",
         "react-redux": "^5.0.6",
         "react-toggle-button": "^2.1.0",

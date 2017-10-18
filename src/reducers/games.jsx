@@ -4,7 +4,9 @@ import {
     ADD_HEALTH, ADD_EXPERIENCE,
     EXP_WARRIOR, EXP_GLADIATOR, EXP_MAGE, EXP_BERSERKER,
     GENERATE_NEXT_LEVEL,
-    PLAYER_MOVE, TOGGLE_SOUND, SET_VOLUME
+    PLAYER_MOVE, TOGGLE_SOUND, SET_VOLUME,
+    ANIMATION_GAME_OVER, ANIMATION_NONE, ANIMATION_SWITCH_HERO, ANIMATION_NEW_LEVEL,
+    TURN_OFF_ANIMATION, 
 } from '../constant';
 import Player, { PlayerEnum, PlayerDirectionEnum } from '../components/Player';
 import generateDungeonTreeForMap, {
@@ -41,6 +43,7 @@ export const initialState = {
     sound_to_play: '',
     sound_on: true,
     volume: 50,
+    animation : ANIMATION_NONE,
     messages: []
 }
 export default function game(state = initialState, action) {
@@ -56,12 +59,18 @@ export default function game(state = initialState, action) {
             return Object.assign({}, state, {
                 sound_on: newSound
             });
+        }
 
+        case TURN_OFF_ANIMATION: {
+            return Object.assign({}, state, {
+                animation : ANIMATION_NONE                
+            });
         }
         case GENERATE_NEXT_LEVEL: {
             var newState = generateLevel(state);
             if (newState.level > 1) {
                 newState.sound_to_play = 'snd_levelup.mp3';
+                newState.animation = ANIMATION_NEW_LEVEL;
             }
             newState.messages.push('You started the level ' + newState.level);
             return newState;
@@ -108,6 +117,10 @@ export default function game(state = initialState, action) {
                         newState.messages.push("You killed " + monsterItem.getName());
                         player.addExperience(monsterItem.experience);
                         newState.experience = player.experience;
+                        if (state.player.type !== player.type)
+                        {
+                            newState.animation = ANIMATION_SWITCH_HERO;
+                        }
                         return true;
                     }
                 }
