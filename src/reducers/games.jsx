@@ -348,6 +348,34 @@ function generateLevel(state) {
         }
         var bossesType = BossesType.GOO;
 
+        switch (level) {
+            case 1:
+            {
+                bossesType = BossesType.TENGU;
+                break;
+            }
+            case 2:
+            {
+                bossesType = BossesType.DM300;
+                break;
+            }
+            case 3:
+            {
+                bossesType = BossesType.DWARF_KING;
+                break;
+            }
+            case 4:
+            {
+                bossesType = BossesType.YOG_DZEWA;
+                break;
+            }
+            default:
+            {
+                bossesType = BossesType.GOO;
+                break;
+            }
+        }
+
         var bosses = new Bosses(bossesX, bossesY, bossesType);
         ground[bosses.row][bosses.col].child = bosses;
 

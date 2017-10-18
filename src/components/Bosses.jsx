@@ -16,7 +16,7 @@ class Bosses extends Cell {
      * @param {*} y 
      * @param {*} type must be Monster enum
      */
-    constructor(row, col, health, type = BossesType.GOO) {
+    constructor(row, col, type = BossesType.GOO) {
         super(row, col);
         this.type = type;
         switch (this.type) {
@@ -59,7 +59,7 @@ class Bosses extends Cell {
         }
     }
 
-    getParentStyles = () => {
+    getParentStyles() {
         if (this.parent !== undefined && this.parent !== null) {
             return this.parent.getStyle();
         }
@@ -67,7 +67,7 @@ class Bosses extends Cell {
     }
 
 
-    getImageSrc = () => {
+    getImageSrc() {
         switch (this.type) {
             case BossesType.DM300: {
                 return process.env.PUBLIC_URL + "/image/bosses/DM300_gif.gif";
@@ -90,7 +90,7 @@ class Bosses extends Cell {
         }
     }
 
-    getName = () => {
+    getName() {
         switch (this.type) {
             case BossesType.DM300: {
                 return "DM300";
