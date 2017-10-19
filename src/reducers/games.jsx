@@ -6,7 +6,7 @@ import {
     GENERATE_NEXT_LEVEL,
     PLAYER_MOVE, TOGGLE_SOUND, SET_VOLUME,
     ANIMATION_GAME_OVER, ANIMATION_NONE, ANIMATION_SWITCH_HERO, ANIMATION_NEW_LEVEL,
-    TURN_OFF_ANIMATION, 
+    TURN_OFF_ANIMATION,
 } from '../constant';
 import Player, { PlayerEnum, PlayerDirectionEnum } from '../components/Player';
 import generateDungeonTreeForMap, {
@@ -43,7 +43,7 @@ export const initialState = {
     sound_to_play: '',
     sound_on: true,
     volume: 50,
-    animation : ANIMATION_NONE,
+    animation: ANIMATION_NONE,
     messages: []
 }
 export default function game(state = initialState, action) {
@@ -63,16 +63,14 @@ export default function game(state = initialState, action) {
 
         case TURN_OFF_ANIMATION: {
             return Object.assign({}, state, {
-                animation : ANIMATION_NONE,
-                sound_to_play : ''                
+                animation: ANIMATION_NONE,
+                sound_to_play: ''
             });
         }
         case GENERATE_NEXT_LEVEL: {
             var newState = generateLevel(state);
-            if (newState.level > 1) {
-                newState.sound_to_play = 'snd_levelup.mp3';
-                newState.animation = ANIMATION_NEW_LEVEL;
-            }
+            newState.sound_to_play = 'snd_levelup.mp3';
+            newState.animation = ANIMATION_NEW_LEVEL;
             newState.messages.push('You started the level ' + newState.level);
             return newState;
         }
@@ -118,8 +116,7 @@ export default function game(state = initialState, action) {
                         newState.messages.push("You killed " + monsterItem.getName());
                         player.addExperience(monsterItem.experience);
                         newState.experience = player.experience;
-                        if (state.player.type !== player.type)
-                        {
+                        if (state.player.type !== player.type) {
                             newState.animation = ANIMATION_SWITCH_HERO;
                         }
                         return true;
@@ -364,30 +361,30 @@ function generateLevel(state) {
 
         switch (level) {
             case 1:
-            {
-                bossesType = BossesType.TENGU;
-                break;
-            }
+                {
+                    bossesType = BossesType.TENGU;
+                    break;
+                }
             case 2:
-            {
-                bossesType = BossesType.DM300;
-                break;
-            }
+                {
+                    bossesType = BossesType.DM300;
+                    break;
+                }
             case 3:
-            {
-                bossesType = BossesType.DWARF_KING;
-                break;
-            }
+                {
+                    bossesType = BossesType.DWARF_KING;
+                    break;
+                }
             case 4:
-            {
-                bossesType = BossesType.YOG_DZEWA;
-                break;
-            }
+                {
+                    bossesType = BossesType.YOG_DZEWA;
+                    break;
+                }
             default:
-            {
-                bossesType = BossesType.GOO;
-                break;
-            }
+                {
+                    bossesType = BossesType.GOO;
+                    break;
+                }
         }
 
         var bosses = new Bosses(bossesX, bossesY, bossesType);
@@ -407,7 +404,7 @@ function generateLevel(state) {
 
     var newState = Object.assign({}, state, {
         level: level + 1, player, ground,
-        messages : state.messages.slice(0),
+        messages: state.messages.slice(0),
         foods,
         items,
         bosses,
