@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
+import { Button } from 'react-bootstrap';
 import '../generated/components/styles/Games.css';
 import _ from 'lodash';
 import WallCell from '../data/WallCell';
@@ -9,12 +10,14 @@ import RoomCell from '../data/RoomCell';
 import {
     ANIMATION_GAME_OVER, ANIMATION_NONE, ANIMATION_SWITCH_HERO, ANIMATION_NEW_LEVEL,
 } from '../constant';
-import { setPlayer, movePlayer, addHealth, addExperience, generateNextLevel, turnOffAnimation } from '../actions';
+import { setPlayer, movePlayer, addHealth, addExperience, generateNextLevel,
+    replayGame, 
+    turnOffAnimation } from '../actions';
 import { debug } from '../config';
 import Food from './Food';
 import Monster from './Monster';
 import Bosses from './Bosses';
-import { PlayerDirectionEnum } from './Player';
+import { PlayerDirectionEnum, PlayerEnum } from './Player';
 import { baseUrl, animationTimeOut } from '../config';
 import { playSound } from '../configureStore';
 const showZoneWidth = 36;
@@ -152,7 +155,7 @@ class Game extends Component {
             }.bind(this), animationTimeOut);
         }
 
-        const createModal = (text, imgUrl) => {
+        const createModal = (text, imgUrl, textBtn) => {
 
             return (<Modal
                 isOpen={this.props.games.animation != ANIMATION_NONE}
@@ -163,9 +166,42 @@ class Game extends Component {
                 <img src={baseUrl + "animation/" + imgUrl} className="img-responsive" />
                 <div className="centerHorizontal">
                     <div className="congratText">
-                        {text}
-                    </div></div>
+                    {text}
+                        </div>
+                    <Button className="congratText"
+                    bsSize="large"
+                    onClick={this.props.replayGame}>
+                        OK
+                    </Button>
+                </div>
             </Modal>);
+        }
+        if (this.props.games.animation === ANIMATION_GAME_OVER) {
+            //setAnimationTimeOut(animationTimeOut.gameOver);
+            var text = "Game over, try again and kill the big boss!!!";
+            var imgUrl = "gameOverWarior.gif";            
+            switch (this.props.games.player.type)
+            {
+                case PlayerEnum.GLADIATOR: {
+                    imgUrl = "gameOverGladiator.gif";
+                    break;
+                }
+                case PlayerEnum.MAGE: {
+                    imgUrl = "gameOverMage.gif";
+                    break;
+                }
+                case PlayerEnum.BERSERKER: {
+                    imgUrl = "gameOverBerserkerr.gif";
+                    break;
+                }
+                default: {
+                    imgUrl = "gameOverWarior.gif";
+                    break;
+                }
+            }
+            var soundUrl = "mario_game_over.mp3";
+            playSound(soundUrl, this.props.games.volume);
+            return createModal(text, imgUrl);            
         }
         if (this.props.games.animation === ANIMATION_SWITCH_HERO) {
             setAnimationTimeOut(animationTimeOut.switchHero);
@@ -272,4 +308,5 @@ function mapStateToProps(state) {
     return { games: state };
 }
 
-export default connect(mapStateToProps, { setPlayer, movePlayer, addHealth, addExperience, generateNextLevel, turnOffAnimation })(Game);
+export default connect(mapStateToProps, { setPlayer, movePlayer, addHealth, addExperience, generateNextLevel,
+    replayGame, turnOffAnimation })(Game);

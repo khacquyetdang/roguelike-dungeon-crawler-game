@@ -1,6 +1,7 @@
 import {
     SET_MAPWITHROOMANDHALL, SET_GROUND, SET_PLAYER, SET_FOODS,
-    SET_ITEMS, ADD_HEALTH, ADD_EXPERIENCE, GENERATE_NEXT_LEVEL,
+    SET_ITEMS, ADD_HEALTH, ADD_EXPERIENCE, 
+    GENERATE_NEXT_LEVEL, REPLAY_GAME,
     PLAYER_MOVE,
     TOGGLE_SOUND,
     SET_VOLUME, TURN_OFF_ANIMATION
@@ -72,6 +73,7 @@ export const addExperience = makeActionCreator(ADD_EXPERIENCE, 'experience');
  */
 export const generateNextLevel = makeActionCreator(GENERATE_NEXT_LEVEL);
 
+export const replayGame = makeActionCreator(REPLAY_GAME);
 
 /**
  * 

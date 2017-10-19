@@ -7,6 +7,7 @@ export const SET_ITEMS = "SET_ITEMS";
 export const ADD_HEALTH = "ADD_HEALTH";
 export const ADD_EXPERIENCE = "ADD_EXPERIENCE";
 export const GENERATE_NEXT_LEVEL = "GENERATE_NEXT_LEVEL";
+export const REPLAY_GAME = "REPLAY_GAME";
 
 export const PLAYER_MOVE = "PLAYER_MOVE";
 export const TOGGLE_SOUND = "TOGGLE_SOUND";

@@ -4,6 +4,7 @@ import {
     ADD_HEALTH, ADD_EXPERIENCE,
     EXP_WARRIOR, EXP_GLADIATOR, EXP_MAGE, EXP_BERSERKER,
     GENERATE_NEXT_LEVEL,
+    REPLAY_GAME,
     PLAYER_MOVE, TOGGLE_SOUND, SET_VOLUME,
     ANIMATION_GAME_OVER, ANIMATION_NONE, ANIMATION_SWITCH_HERO, ANIMATION_NEW_LEVEL,
     TURN_OFF_ANIMATION,
@@ -67,9 +68,18 @@ export default function game(state = initialState, action) {
                 sound_to_play: ''
             });
         }
+        case REPLAY_GAME: {
+            var newState = generateLevel(initialState);
+            newState.sound_to_play = '';
+            newState.animation = ANIMATION_NEW_LEVEL;
+            newState.messages.push('You started the level ' + newState.level);
+            return newState;
+        }
         case GENERATE_NEXT_LEVEL: {
             var newState = generateLevel(state);
-            newState.sound_to_play = 'snd_levelup.mp3';
+            if (newState.level > 1) {
+                newState.sound_to_play = 'snd_levelup.mp3';
+            }
             newState.animation = ANIMATION_NEW_LEVEL;
             newState.messages.push('You started the level ' + newState.level);
             return newState;
@@ -107,7 +117,11 @@ export default function game(state = initialState, action) {
                     player.addHealth(monsterItem.damaged);
                     newState.health = player.health;
                     newState.sound_to_play = 'snd_hit.mp3';
-
+                    if (player.health <= 0) {
+                        newState.animation = ANIMATION_GAME_OVER;
+                        newState.sound_to_play = '';
+                        return false;
+                    }
                     if (monsterItem.strength > 0) {
                         newState.messages.push("You attacked " + monsterItem.getName());
                         return false;
@@ -131,6 +145,12 @@ export default function game(state = initialState, action) {
                     bossItem.strength = bossItem.strength - player.attack;
                     player.addHealth(bossItem.damaged);
                     newState.health = player.health;
+
+                    if (player.health <= 0) {
+                        newState.animation = ANIMATION_GAME_OVER;
+                        newState.sound_to_play = '';
+                        return false;
+                    }
 
                     if (bossItem.strength > 0) {
                         newState.messages.push("You attacked the bosses " + bossItem.getName());

@@ -10,5 +10,5 @@ export const animationTimeOut = {
     switchHero : 2000,
     newLevel : 6000,
     gameWin : 4000,
-    gameOver : 3000,
+    gameOver : Number.MAX_VALUE,
 };
