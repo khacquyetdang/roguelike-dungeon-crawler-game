@@ -68,39 +68,37 @@ class Game extends Component {
             return;
         }
         var { player, ground } = this.props.games;
-        switch (event.key) {
-            case "ArrowDown":
-                if (player.row + 1 < this.props.games.ground.length) {
-                    if (ground[player.row + 1][player.col] instanceof WallCell) {
-                        return;
-                    }
-                    this.props.movePlayer(PlayerDirectionEnum.BOTTOM);
+        var moveDown
+        if (event.key === "ArrowDown" || event.key === 'x') {
+            if (player.row + 1 < this.props.games.ground.length) {
+                if (ground[player.row + 1][player.col] instanceof WallCell) {
+                    return;
                 }
-                break;
-            case "ArrowUp":
-                if (player.row > 0) {
-                    if (ground[player.row - 1][player.col] instanceof WallCell) {
-                        return;
-                    }
-                    this.props.movePlayer(PlayerDirectionEnum.TOP);
+                this.props.movePlayer(PlayerDirectionEnum.BOTTOM);
+            }
+        } else if (event.key === "ArrowUp" || event.key === 'z') {
+            if (player.row > 0) {
+                if (ground[player.row - 1][player.col] instanceof WallCell) {
+                    return;
                 }
-                break;
-            case "ArrowLeft":
-                if (player.col > 0) {
-                    if (ground[player.row][player.col - 1] instanceof WallCell) {
-                        return;
-                    }
-                    this.props.movePlayer(PlayerDirectionEnum.LEFT);
+                this.props.movePlayer(PlayerDirectionEnum.TOP);
+            }
+        }
+        else if (event.key ===  "ArrowLeft" || event.key === 'q') {
+            if (player.col > 0) {
+                if (ground[player.row][player.col - 1] instanceof WallCell) {
+                    return;
                 }
-                break;
-            case "ArrowRight":
-                if (player.col + 1 < this.props.games.ground[0].length) {
-                    if (ground[player.row][player.col + 1] instanceof WallCell) {
-                        return;
-                    }
-                    this.props.movePlayer(PlayerDirectionEnum.RIGHT);
+                this.props.movePlayer(PlayerDirectionEnum.LEFT);
+            }
+        } else if (event.key ===  "ArrowRight" || event.key === 'd') 
+        {
+            if (player.col + 1 < this.props.games.ground[0].length) {
+                if (ground[player.row][player.col + 1] instanceof WallCell) {
+                    return;
                 }
-                break;
+                this.props.movePlayer(PlayerDirectionEnum.RIGHT);
+            }         
         }
     }
 
@@ -153,7 +151,7 @@ class Game extends Component {
         }
 
         const createModal = (text, imgUrl) => {
-            
+
             return (<Modal
                 isOpen={this.props.games.animation != ANIMATION_NONE}
                 onRequestClose={this.requestCloseFn}
@@ -170,17 +168,17 @@ class Game extends Component {
         if (this.props.games.animation === ANIMATION_SWITCH_HERO) {
 
             setAnimationTimeOut();
-            var text = "Wow, you become the heros " +this.props.games.player.getName();
+            var text = "Wow, you become the heros " + this.props.games.player.getName();
             var imgUrl = "switchHeros.gif";
             return createModal(text, imgUrl);
         }
 
         if (this.props.games.animation === ANIMATION_NEW_LEVEL) {
-         
+
             setAnimationTimeOut();
 
             var congratText = "Congratulation, you have finished level" + (this.props.games.level - 1);
-            
+
             var imgUrl = "nextlevel.gif";
             return createModal(congratText, imgUrl);
         }
