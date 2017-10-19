@@ -27,6 +27,12 @@
   align-items: center;
   border: solid 0.5px #A8A7A7; }
 
+.animateNewLevel {
+  animation: zoomInDown 6s infinite; }
+
+.animateSwitchHero {
+  animation: bounce 5s infinite; }
+
 .imgFood,
 .imgMonster,
 .imgBosses {

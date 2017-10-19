@@ -2,9 +2,9 @@ import { createStore } from 'redux';
 import reducer from './reducers/games';
 import throttle from 'lodash/throttle';
 import { baseUrl } from './config';
-function playSound(sound, volume = 50) {
+
+export function playSound(sound, volume = 50) {
   var sound_url = baseUrl + '/sound/' + sound;
-  console.log("sound url: ", sound_url);
   var audio = new Audio(sound_url);
   audio.volume = volume / 100.;
   audio.play()

@@ -15,7 +15,8 @@ import Food from './Food';
 import Monster from './Monster';
 import Bosses from './Bosses';
 import { PlayerDirectionEnum } from './Player';
-import { baseUrl } from '../config';
+import { baseUrl, animationTimeOut } from '../config';
+import { playSound } from '../configureStore';
 const showZoneWidth = 36;
 const showZoneHeight = 20;
 
@@ -142,9 +143,10 @@ class Game extends Component {
         this.setState({ isModalOpen: false });
     }
 
+
+
     showAnimation = () => {
-        const animationTimeOut = 5000;
-        const setAnimationTimeOut = () => {
+        const setAnimationTimeOut = (animationTimeOut = 2000) => {
             setTimeout(function () {
                 this.props.turnOffAnimation();
             }.bind(this), animationTimeOut);
@@ -166,21 +168,24 @@ class Game extends Component {
             </Modal>);
         }
         if (this.props.games.animation === ANIMATION_SWITCH_HERO) {
-
-            setAnimationTimeOut();
+            setAnimationTimeOut(animationTimeOut.switchHero);
             var text = "Wow, you become the heros " + this.props.games.player.getName();
             var imgUrl = "switchHeros.gif";
-            return createModal(text, imgUrl);
+            var soundUrl = "mario_switch_hero.mp3";
+            playSound(soundUrl, this.props.games.volume)
+            // we set the animation inside of the cell
+            // only animation for the games over and win games
+            //return createModal(text, imgUrl);
         }
 
         if (this.props.games.animation === ANIMATION_NEW_LEVEL) {
-
-            setAnimationTimeOut();
-
+            setAnimationTimeOut(animationTimeOut.newLevel);            
             var congratText = "Congratulation, you have finished level" + (this.props.games.level - 1);
-
             var imgUrl = "nextlevel.gif";
-            return createModal(congratText, imgUrl);
+            soundUrl = "mario_level_complete.mp3";
+            playSound(soundUrl, this.props.games.volume);
+            
+            //return createModal(congratText, imgUrl);
         }
 
         return null;
@@ -197,6 +202,7 @@ class Game extends Component {
 
         var { player } = this.props.games;
 
+        player.animation = this.props.games.animation;
         var game2DArr = _.map(game2DArr, _.clone);
         player.parent = game2DArr[player.row][player.col];
         game2DArr[player.row][player.col] = player;
@@ -243,10 +249,18 @@ class Game extends Component {
             );
             return <div key={indexRow} className="GameRow">{divRow}</div>
         });
+
+        var animationCss = "";
+        if (this.props.games.animation === ANIMATION_NEW_LEVEL)
+        {
+            animationCss = "animateNewLevel";
+        }
+
+        var cssClassGameMap = "gameMap " + animationCss;
         return (
 
             <div onKeyDown={this.onKeyPress}
-                className="gameMap" >
+                className={cssClassGameMap} >
                 {this.showAnimation()}
                 {gameMapDiv}
             </div >

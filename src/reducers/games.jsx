@@ -63,7 +63,8 @@ export default function game(state = initialState, action) {
 
         case TURN_OFF_ANIMATION: {
             return Object.assign({}, state, {
-                animation : ANIMATION_NONE                
+                animation : ANIMATION_NONE,
+                sound_to_play : ''                
             });
         }
         case GENERATE_NEXT_LEVEL: {

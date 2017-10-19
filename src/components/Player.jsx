@@ -2,6 +2,11 @@ import Cell from '../data/Cell';
 import React from 'react';
 import { debug, baseUrl } from '../config';
 import { EXP_BERSERKER, EXP_GLADIATOR, EXP_MAGE, EXP_WARRIOR} from '../constant';
+
+import {
+    ANIMATION_NONE, ANIMATION_SWITCH_HERO
+} from '../constant';
+
 export const PlayerEnum = {
     WARRIOR: 1,
     GLADIATOR: 2,
@@ -135,10 +140,23 @@ class Player extends Cell {
         return baseUrl + "/image/player/warrior.png";        
     }
     render() {
+        if (this.animation !== undefined && this.animation !== null && this.animation === ANIMATION_SWITCH_HERO)
+        {
+            return this.renderSwitchHero();
+        }
+
         return (<div
             className="GameCell PlayerContainer"
             style={this.getParentStyles()}>
             <img src={this.getImageSrc()} className="imgFood img-responsive Player" />
+        </div>);
+    }
+
+    renderSwitchHero() {
+        return (<div
+            className="GameCell PlayerContainer"
+            style={this.getParentStyles()}>
+            <img src={this.getImageSrc()} className="imgFood img-responsive Player animateSwitchHero" />
         </div>);
     }
 
