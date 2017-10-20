@@ -210,7 +210,7 @@ class Game extends Component {
                 closeTimeoutMS={500}
                 style={customStyles}
             >
-                <img src={baseUrl + "animation/" + imgUrl} className="img-responsive" />
+                <img src={baseUrl + "/animation/" + imgUrl} className="img-responsive" />
                 <div className="centerHorizontal">
                     <div className="congratText">
                         {text}
