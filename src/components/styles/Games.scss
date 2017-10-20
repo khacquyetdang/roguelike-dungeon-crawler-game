@@ -130,6 +130,28 @@ $toolTipSliderSize: 30px;
     align-items: center;
     flex-direction: column;
 }
+
+.winningModal {
+    width: 500px;
+    height: 500px;
+    border-radius: 0px;
+    & .congratText {
+        color: #BDBDBD;
+        animation: jello 10s infinite;
+        max-width: 400px;
+        text-align: center;
+    }
+}
+
+.winningFooter {
+    position: absolute;
+    bottom: 5px;
+}
+
+.space {
+    border-radius: 38px;
+}
+
 .ReactModalPortal .ReactModal__Overlay {
     display: flex;
     flex-direction: col;
@@ -139,12 +161,4 @@ $toolTipSliderSize: 30px;
     &--after-open {
         opacity: 1;
     }
-
-    & .congratText {
-        animation: jello 10s infinite;
-        max-width: 200px;
-        text-align: center;
-    }
-  
 }
-

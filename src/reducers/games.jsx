@@ -6,7 +6,8 @@ import {
     GENERATE_NEXT_LEVEL,
     REPLAY_GAME,
     PLAYER_MOVE, TOGGLE_SOUND, SET_VOLUME,
-    ANIMATION_GAME_OVER, ANIMATION_NONE, ANIMATION_SWITCH_HERO, ANIMATION_NEW_LEVEL,
+    ANIMATION_GAME_OVER, ANIMATION_NONE, ANIMATION_SWITCH_HERO, 
+    ANIMATION_NEW_LEVEL, ANIMATION_GAME_WIN,
     TURN_OFF_ANIMATION,
 } from '../constant';
 import Player, { PlayerEnum, PlayerDirectionEnum } from '../components/Player';
@@ -36,7 +37,6 @@ export const initialState = {
     health: initHealth,
     weapons: [],
     experience: 0,
-    attack: 7,
     level: 0,
     nextLevel: 100,
     bosses: null,
@@ -80,7 +80,7 @@ export default function game(state = initialState, action) {
             if (newState.level > 1) {
                 newState.sound_to_play = 'snd_levelup.mp3';
             }
-            newState.animation = ANIMATION_NEW_LEVEL;
+            newState.animation = ANIMATION_NEW_LEVEL;            
             newState.messages.push('You started the level ' + newState.level);
             return newState;
         }
@@ -159,6 +159,13 @@ export default function game(state = initialState, action) {
                         newState.messages.push("You killed the bosses " + bossItem.getName());
                         player.addExperience(bossItem.experience);
                         newState.experience = player.experience;
+                        newState.attack = player.attack;
+                        bossItem.isAvailable = false;
+                        if (bossItem.type === BossesType.DWARF_KING)
+                        {
+                            newState.animation = ANIMATION_GAME_WIN;
+                            newState.sound_to_play = '';                                
+                        }
                         //this.props.generateNextLevel();
                     }
                 }
@@ -304,6 +311,7 @@ function generateLevel(state) {
         if (state.player !== null) {
             player.type = state.player.type;
             player.health = state.player.health;
+            player.attack = state.player.attack;
         }
         return player;
     };
@@ -333,7 +341,7 @@ function generateLevel(state) {
             //for (var roomIndex = 0; roomIndex < 1; roomIndex++) {
 
             // each room wi
-            var foodMaxItemForRoom = getRandomInt(1, 3 + level);
+            var foodMaxItemForRoom = getRandomInt(level + 1, 3 + level);
             var room = treeWithRoomAndHall.getLeafs()[roomIndex];
             for (var indexFood = 0; indexFood < foodMaxItemForRoom; indexFood++) {
                 var foodKind = getRandomInt(1, 3);
@@ -382,22 +390,22 @@ function generateLevel(state) {
         switch (level) {
             case 1:
                 {
-                    bossesType = BossesType.TENGU;
+                    bossesType = BossesType.DM300;
                     break;
                 }
             case 2:
                 {
-                    bossesType = BossesType.DM300;
+                    bossesType = BossesType.TENGU;                    
                     break;
                 }
             case 3:
                 {
-                    bossesType = BossesType.DWARF_KING;
+                    bossesType = BossesType.YOG_DZEWA;                    
                     break;
                 }
             case 4:
                 {
-                    bossesType = BossesType.YOG_DZEWA;
+                    bossesType = BossesType.DWARF_KING;
                     break;
                 }
             default:

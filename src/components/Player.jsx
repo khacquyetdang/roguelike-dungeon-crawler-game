@@ -111,14 +111,15 @@ class Player extends Cell {
         if (this.type === PlayerEnum.WARRIOR && this.experience >= EXP_GLADIATOR) {
             this.type = PlayerEnum.GLADIATOR;
             this.experience = 0;
-            this.attack = 10;
+            this.attack = 14;
         } else if (this.type === PlayerEnum.GLADIATOR && this.experience >= EXP_BERSERKER) {
             this.type = PlayerEnum.BERSERKER;
             this.experience = 0;
-            this.attack = 12;            
+            this.attack = 18;            
         } else if (this.type === PlayerEnum.BERSERKER && this.experience >= EXP_MAGE) {
             this.type = PlayerEnum.MAGE;
-            this.experience = 15;
+            this.experience = 0;
+            this.attack = 21;                    
         }
     }
 

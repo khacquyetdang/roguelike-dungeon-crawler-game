@@ -18,10 +18,6 @@ class App extends Component {
         super();
     }
 
-
-
-
-
     componentDidMount() {
         this.props.generateNextLevel();
     }

@@ -110,6 +110,23 @@
   align-items: center;
   flex-direction: column; }
 
+.winningModal {
+  width: 500px;
+  height: 500px;
+  border-radius: 0px; }
+  .winningModal .congratText {
+    color: #BDBDBD;
+    animation: jello 10s infinite;
+    max-width: 400px;
+    text-align: center; }
+
+.winningFooter {
+  position: absolute;
+  bottom: 5px; }
+
+.space {
+  border-radius: 38px; }
+
 .ReactModalPortal .ReactModal__Overlay {
   display: flex;
   flex-direction: col;
@@ -118,7 +135,3 @@
   animation: rollIn 3s; }
   .ReactModalPortal .ReactModal__Overlay--after-open {
     opacity: 1; }
-  .ReactModalPortal .ReactModal__Overlay .congratText {
-    animation: jello 10s infinite;
-    max-width: 200px;
-    text-align: center; }

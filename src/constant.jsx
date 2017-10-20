@@ -33,3 +33,4 @@ export const ANIMATION_NONE = 1;
 export const ANIMATION_NEW_LEVEL = 2;
 export const ANIMATION_SWITCH_HERO = 3;
 export const ANIMATION_GAME_OVER = 4;
+export const ANIMATION_GAME_WIN = 5;

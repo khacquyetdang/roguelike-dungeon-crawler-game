@@ -5,8 +5,8 @@ export const BossesType = {
     GOO: 1,
     TENGU: 2,
     DM300: 3,
-    DWARF_KING: 4,
-    YOG_DZEWA: 5,
+    YOG_DZEWA: 4,
+    DWARF_KING: 5,
 
 };
 class Bosses extends Cell {
@@ -20,13 +20,13 @@ class Bosses extends Cell {
         super(row, col);
         this.type = type;
         switch (this.type) {
-            case BossesType.DM300: {
+            case BossesType.GOO: {
                 this.strength = 60;
                 this.damaged = -7;
                 this.experience = 10;
                 break;
             }
-            case BossesType.GOO: {
+            case BossesType.DM300: {
                 this.strength = 70;
                 this.damaged = -10;
                 this.experience = 15;

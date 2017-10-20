@@ -3,16 +3,19 @@ import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import { Button } from 'react-bootstrap';
 import '../generated/components/styles/Games.css';
+import '../generated/components/styles/Win.css';
 import _ from 'lodash';
 import WallCell from '../data/WallCell';
 import HallCell from '../data/HallCell';
 import RoomCell from '../data/RoomCell';
 import {
-    ANIMATION_GAME_OVER, ANIMATION_NONE, ANIMATION_SWITCH_HERO, ANIMATION_NEW_LEVEL,
+    ANIMATION_GAME_OVER, ANIMATION_NONE, ANIMATION_SWITCH_HERO, ANIMATION_NEW_LEVEL, ANIMATION_GAME_WIN,
 } from '../constant';
-import { setPlayer, movePlayer, addHealth, addExperience, generateNextLevel,
-    replayGame, 
-    turnOffAnimation } from '../actions';
+import {
+    setPlayer, movePlayer, addHealth, addExperience, generateNextLevel,
+    replayGame,
+    turnOffAnimation
+} from '../actions';
 import { debug } from '../config';
 import Food from './Food';
 import Monster from './Monster';
@@ -88,21 +91,20 @@ class Game extends Component {
                 this.props.movePlayer(PlayerDirectionEnum.TOP);
             }
         }
-        else if (event.key ===  "ArrowLeft" || event.key === 'q') {
+        else if (event.key === "ArrowLeft" || event.key === 'q') {
             if (player.col > 0) {
                 if (ground[player.row][player.col - 1] instanceof WallCell) {
                     return;
                 }
                 this.props.movePlayer(PlayerDirectionEnum.LEFT);
             }
-        } else if (event.key ===  "ArrowRight" || event.key === 'd') 
-        {
+        } else if (event.key === "ArrowRight" || event.key === 'd') {
             if (player.col + 1 < this.props.games.ground[0].length) {
                 if (ground[player.row][player.col + 1] instanceof WallCell) {
                     return;
                 }
                 this.props.movePlayer(PlayerDirectionEnum.RIGHT);
-            }         
+            }
         }
     }
 
@@ -137,7 +139,9 @@ class Game extends Component {
     componentWillReceiveProps(nextProps) {
         console.log("componentWillReceiveProps");
         if (nextProps.games.bosses !== null && nextProps.games.bosses.strength <= 0) {
-            nextProps.generateNextLevel();
+            if (nextProps.games.animation !== ANIMATION_GAME_WIN) {
+                nextProps.generateNextLevel();
+            }
         }
     }
 
@@ -147,6 +151,49 @@ class Game extends Component {
     }
 
 
+    createAnimationMarsLanding(text) {
+
+        return (<Modal
+            isOpen={this.props.games.animation != ANIMATION_NONE}
+            onRequestClose={this.requestCloseFn}
+            closeTimeoutMS={500}
+            style={customStyles}
+        >
+            <div className="centerHorizontal winningModal">
+                <div className="space">
+                    <div className="ship">
+                        <div className="ship-rotate">
+                            <div className="pod"></div>
+                            <div className="fuselage"></div>
+                        </div>
+                    </div>
+                    <div className="ship-shadow"></div>
+                    <div className="mars">
+                        <div className="tentacle"></div>
+                        <div className="flag">
+                            <div className="small-tentacle"></div>
+                        </div>
+                        <div className="planet">
+                            <div className="surface"></div>
+                            <div className="crater1"></div>
+                            <div className="crater2"></div>
+                            <div className="crater3"></div>
+                        </div>
+                    </div>
+                    <div className="test"></div>
+                </div>
+                <div className="winningFooter">
+                    <div className="congratText">
+                        {text}
+                    </div>
+                    <Button
+                        onClick={this.props.replayGame}>
+                        Replay
+                </Button>
+                </div>
+            </div>
+        </Modal>);
+    }
 
     showAnimation = () => {
         const setAnimationTimeOut = (animationTimeOut = 2000) => {
@@ -155,7 +202,7 @@ class Game extends Component {
             }.bind(this), animationTimeOut);
         }
 
-        const createModal = (text, imgUrl, textBtn) => {
+        const createModal = (text, imgUrl, textBtn, winning = false) => {
 
             return (<Modal
                 isOpen={this.props.games.animation != ANIMATION_NONE}
@@ -166,12 +213,12 @@ class Game extends Component {
                 <img src={baseUrl + "animation/" + imgUrl} className="img-responsive" />
                 <div className="centerHorizontal">
                     <div className="congratText">
-                    {text}
-                        </div>
+                        {text}
+                    </div>
                     <Button className="congratText"
-                    bsSize="large"
-                    onClick={this.props.replayGame}>
-                        OK
+                        bsSize="small"
+                        onClick={this.props.replayGame}>
+                        Take another chance
                     </Button>
                 </div>
             </Modal>);
@@ -179,9 +226,8 @@ class Game extends Component {
         if (this.props.games.animation === ANIMATION_GAME_OVER) {
             //setAnimationTimeOut(animationTimeOut.gameOver);
             var text = "Game over, try again and kill the big boss!!!";
-            var imgUrl = "gameOverWarior.gif";            
-            switch (this.props.games.player.type)
-            {
+            var imgUrl = "gameOverWarior.gif";
+            switch (this.props.games.player.type) {
                 case PlayerEnum.GLADIATOR: {
                     imgUrl = "gameOverGladiator.gif";
                     break;
@@ -201,7 +247,16 @@ class Game extends Component {
             }
             var soundUrl = "mario_game_over.mp3";
             playSound(soundUrl, this.props.games.volume);
-            return createModal(text, imgUrl);            
+            return createModal(text, imgUrl, "Replay", false);
+        }
+
+        if (this.props.games.animation === ANIMATION_GAME_WIN) {
+            var text = "Congratulation, you kill the big boss and win the games!!!";
+            //var imgUrl = "gameOverWarior.gif";
+            var soundUrl = "mario_game_win.mp3";
+            playSound(soundUrl, this.props.games.volume);
+            return this.createAnimationMarsLanding(text);
+            //return createModal(text, imgUrl);
         }
         if (this.props.games.animation === ANIMATION_SWITCH_HERO) {
             setAnimationTimeOut(animationTimeOut.switchHero);
@@ -215,12 +270,12 @@ class Game extends Component {
         }
 
         if (this.props.games.animation === ANIMATION_NEW_LEVEL) {
-            setAnimationTimeOut(animationTimeOut.newLevel);            
+            setAnimationTimeOut(animationTimeOut.newLevel);
             var congratText = "Congratulation, you have finished level" + (this.props.games.level - 1);
             var imgUrl = "nextlevel.gif";
             soundUrl = "mario_level_complete.mp3";
             playSound(soundUrl, this.props.games.volume);
-            
+
             //return createModal(congratText, imgUrl);
         }
 
@@ -254,6 +309,12 @@ class Game extends Component {
                     return item;
                 }
             }
+            if (item instanceof Bosses) {
+                if (item.strength <= 0) {
+                    return item;
+                }
+            }
+
             item.parent = game2DArr[item.row][item.col];
             game2DArr[item.row][item.col] = item;
             return item;
@@ -287,8 +348,7 @@ class Game extends Component {
         });
 
         var animationCss = "";
-        if (this.props.games.animation === ANIMATION_NEW_LEVEL)
-        {
+        if (this.props.games.animation === ANIMATION_NEW_LEVEL) {
             animationCss = "animateNewLevel";
         }
 
@@ -308,5 +368,7 @@ function mapStateToProps(state) {
     return { games: state };
 }
 
-export default connect(mapStateToProps, { setPlayer, movePlayer, addHealth, addExperience, generateNextLevel,
-    replayGame, turnOffAnimation })(Game);
+export default connect(mapStateToProps, {
+    setPlayer, movePlayer, addHealth, addExperience, generateNextLevel,
+    replayGame, turnOffAnimation
+})(Game);
